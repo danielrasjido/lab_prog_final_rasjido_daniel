@@ -1,0 +1,1 @@
+aca tiene que ir el index.php principal, integrando las plantillas y el .htacces
