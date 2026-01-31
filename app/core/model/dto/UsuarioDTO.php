@@ -1,7 +1,6 @@
 <?php
 
 use app\core\model\dto\base\InterfaceDto;
-use DateTime;
 
 final class UsuarioDTO implements InterfaceDto{
     private $idUsuario, $idPerfil, $apellido, $nombre, $cuenta, $password, $correo;
