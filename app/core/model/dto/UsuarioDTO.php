@@ -1,9 +1,21 @@
 <?php
 
+namespace app\core\model\dto;
 use app\core\model\dto\base\InterfaceDto;
 
 final class UsuarioDTO implements InterfaceDto{
     private $idUsuario, $idPerfil, $apellido, $nombre, $cuenta, $password, $correo;
+
+    public function __construct(array $data = []){
+    if(!empty($data)){
+        $this->setId($data['id'] ?? 0);
+        $this->setIdPerfil($data['idPerfil'] ?? 0);
+        $this->setApellido($data['apellido'] ?? '');
+        $this->setNombre($data['nombre'] ?? '');
+        $this->setPassword($data['password'] ?? '');
+        $this->setCorreo($data['correo'] ?? '');
+    }
+}
 
 
     // GETTERS
