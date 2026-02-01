@@ -15,7 +15,8 @@ final class Request{
     private $controller, $action;
 
     public function __construct(){
-        
+        $this->controller   = $_GET["controller"] ?? APP_DEFAULT_CONTROLLER;
+        $this->action       = $_GET["action"] ?? APP_DEFAULT_ACTION;
     }
 
     // getters
@@ -48,9 +49,8 @@ final class Request{
      * 
      * @return string Método HTTP.
      */
-    public function getMethod(): ?string{
-        //$_SERVER es un array que tiene información del servidor web
-        //REQUEST_METHOD es para acceder a la página a través de GET o POST
+    public function getMethod() :string
+    {
         return $_SERVER["REQUEST_METHOD"];
     }
     
@@ -69,7 +69,7 @@ final class Request{
      */
     public function getExtra(): ?string
     {
-        return $_GET["extra"] ?? null;
+        return $this->getParameterValue("extra", null);
     }
 
     /**
