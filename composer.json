@@ -1,0 +1,16 @@
+{
+    "name": "danny/lab_prog_final_rasjido_daniel",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Rasjido Daniel",
+            "email": "125170386+danielrasjido@users.noreply.github.com"
+        }
+    ],
+     "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "require": {}
+}
