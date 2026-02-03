@@ -29,6 +29,14 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
 
     public function save(array $data):void{
      
+        //validar que no exista otro usuario igual
+
+        //Insertar el usuario nuevo en la db
+        $sql = "INSERT INTO {$this->table} VALUES(
+            :
+        )";
+
+
     }
     
     //necesita id
