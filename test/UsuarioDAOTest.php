@@ -21,19 +21,10 @@ try {
         "resetPassword" => 0
     ];
 
-    echo "Intentando insertar usuario...\n";
-
-    echo $data;
-
-    $dao->save($data);
-
-    echo "Usuario insertado correctamente\n";
-
-    
-    echo $usuario = $dao->load(1);
+    echo print_r($data);
 
 } catch (Exception $e) {
-    echo "✖ Error al insertar usuario\n";
+    echo "Error al insertar usuario\n";
     echo "Mensaje: " . $e->getMessage() . "\n";
 }
 

@@ -14,6 +14,10 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
         return parent::__construct($connection, 'usuarios');
     }
 
+    /**
+     * Carga un usuario de la base de datos.
+     * @param id Id del usuario que se quiere mostrar.
+     */
     public function load(int $id):array{
 
         $arreglo = [];
@@ -28,6 +32,10 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
         return $arreglo;
     }
 
+    /**
+     * Crea un usuario nuevo.
+     * @param data Array con todos los campos de la tabla de usuario. 
+     */
     public function save(array $data):void{
      
         //validar que no exista otro usuario con la misma cuenta o correo
@@ -70,29 +78,83 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
         $password = password_hash($data["password"], PASSWORD_DEFAULT);
 
         $stmt->execute([
-            "idPerfil" => $data["idPerfil"],
-            "apellido" => $data["apellido"],
-            "nombre" => $data["nombre"],
-            "cuenta" => $data["cuenta"],  
-            "estado" => $data["estado"],
-            "password" => $password,
-            "correo" => $data["correo"],
+            "idPerfil"      => $data["idPerfil"],
+            "apellido"      => $data["apellido"],
+            "nombre"        => $data["nombre"],
+            "cuenta"        => $data["cuenta"],  
+            "estado"        => $data["estado"],
+            "password"      => $password,
+            "correo"        => $data["correo"],
             "resetPassword" => $data["resetPassword"]
         ]);
 
     }
     
-    //necesita id
+    /**
+     * Actualiza un usuario en función del ID.
+     * @param data Array con los campos de la tabla usuario.
+     */
     public function update(array $data):void{
 
+        $sql = 
+        "UPDATE {$this->table} SET
+            apellido    = :apellido,
+            nombre      = :nombre,
+            cuenta      = :cuenta,
+            estado      = :estado,
+            password    = :password,
+            correo      = :correo,
+            resetPassword = :resetPassword
+         WHERE idUsuario = :idUsuario   
+        ";
+
+        $stmt = $this->connection->prepare($sql);
+
+        $stmt->execute([
+        "idPerfil"      => $data["idPerfil"],
+        "apellido"      => $data["apellido"],
+        "nombre"        => $data["nombre"],
+        "cuenta"        => $data["cuenta"],
+        "estado"        => $data["estado"],
+        "password"      => $data["password"], 
+        "correo"        => $data["correo"],
+        "resetPassword" => $data["resetPassword"],
+        "idUsuario"     => $data["idUsuario"]
+        ]);
+
     }
 
+    /**
+     * Elimina un usuario de la base de datos en función del Id de usuario.
+     * @param id Identificador de usuario.
+     */
     public function delete(int $id):void{
-
+        $sql = "DELETE * FROM {$this->table} WHERE idUsuario = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id => $id"]);
     }
 
+    /**
+     * Lista usuarios en base a un filtro.
+     * @param filters array con una o más claves para filtrar usuarios.
+     */
     public function list(array $filters):array{
-        return [];
+        //filtrar por nombre, apellido, tipo de cuenta, correo y estado.
+        $resultado = [];
+        $parametros = [];
+
+        $sql = "SELECT * FROM {$this->table} WHERE 1=1";
+
+        if(!empty($filters["nombre"])){
+            $sql .= " AND (nombre LIKE :nombre)";
+            $parametros["nombre"] = "%" . $filters["nombre"] . "%";
+        }
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($parametros);
+        $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $resultado;
     }
 
     public function suggestive(array $filters):array{
