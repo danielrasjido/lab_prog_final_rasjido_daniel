@@ -19,17 +19,21 @@ final class UsuarioService implements InterfaceService{
     public function load(int $id):InterfaceDto{
         return new UsuarioDTO($this->dao->load($id));
     }
-    
+
     public function save(InterfaceDto $dto):void{
-
+        $this->dao->save($dto->toArray());
     }
+
     public function update(InterfaceDto $dto):void{
-
+        $this->dao->update($dto->toArray());
     }
+
     public function delete(InterfaceDto $dto):void{
-
+        $data = $dto->toArray();
+        $this->dao->delete($data["idUsuario"]);
     }
+    
     public function list(array $filters):array{
-        return [];
+        return $this->dao->list($filters);
     }
 }

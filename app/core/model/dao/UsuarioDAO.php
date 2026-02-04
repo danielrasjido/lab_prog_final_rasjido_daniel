@@ -98,6 +98,7 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
 
         $sql = 
         "UPDATE {$this->table} SET
+            idPerfil    = :idPerfil,
             apellido    = :apellido,
             nombre      = :nombre,
             cuenta      = :cuenta,
@@ -129,14 +130,22 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
      * @param id Identificador de usuario.
      */
     public function delete(int $id):void{
-        $sql = "DELETE * FROM {$this->table} WHERE idUsuario = :id";
+        $sql = "DELETE FROM {$this->table} WHERE idUsuario = :id";
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute(["id => $id"]);
+        $stmt->execute(["id" => (Int)$id]);
     }
 
     /**
-     * Lista usuarios en base a un filtro.
-     * @param filters array con una o más claves para filtrar usuarios.
+     * Obtiene una lista de usuarios aplicando filtros dinámicos.
+     *
+     * @param array filters Filtros posibles:
+     *  - nombre (string)
+     *  - apellido (string)
+     *  - correo (string)
+     *  - idPerfil (int)
+     *  - estado (int|bool)
+     *
+     * @return array Lista de usuarios encontrados
      */
     public function list(array $filters):array{
         //filtrar por nombre, apellido, tipo de cuenta, correo y estado.
@@ -148,6 +157,26 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
         if(!empty($filters["nombre"])){
             $sql .= " AND (nombre LIKE :nombre)";
             $parametros["nombre"] = "%" . $filters["nombre"] . "%";
+        }
+
+        if(!empty($filters["apellido"])){
+            $sql .= " AND (apellido LIKE :apellido)";
+            $parametros["apellido"] = "%" . $filters["apellido"] . "%";
+        }
+
+        if(isset($filters["idPerfil"])){
+            $sql .= " AND idPerfil = :idPerfil";
+            $parametros["idPerfil"] = (Int)$filters["idPerfil"];
+        }
+
+        if(!empty($filters["correo"])){
+            $sql .= " AND (correo LIKE :correo)";
+            $parametros["correo"] = "%" . $filters["correo"] . "%";
+        }
+
+        if(isset($filters["estado"])){
+            $sql .= " AND estado = :estado";
+            $parametros["estado"] = (Int)$filters["estado"];
         }
 
         $stmt = $this->connection->prepare($sql);
