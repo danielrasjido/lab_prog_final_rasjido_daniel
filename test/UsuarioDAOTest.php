@@ -35,7 +35,7 @@ try {
         "resetPassword" => 0
     ];
 
-    $dao->update($data2);
+   // $dao->update($data2);
 
     //$dao->delete(5);
 

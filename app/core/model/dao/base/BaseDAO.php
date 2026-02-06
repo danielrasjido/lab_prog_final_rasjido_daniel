@@ -1,8 +1,9 @@
 <?php
 
 namespace app\core\model\dao\base;
+require_once("InterfaceDAO.php");
 
-class BaseDAO{
+abstract class BaseDAO implements InterfaceDAO{
     protected $connection;
     protected $table;
 
@@ -10,6 +11,18 @@ class BaseDAO{
         $this->connection = $connection;
         $this->table = $table;
     }
+
+    //MÉTODOS CRUD
+
+   abstract public function load(int $id):array;
+
+   abstract public function save(array $data):void;
+  
+   abstract  public function update(array $data):void;
+   
+   abstract public function delete(int $id):void;
+   
+   abstract public function list(array $filters):array;
 
     //METODOS PUBLICOS
 
@@ -31,5 +44,5 @@ class BaseDAO{
         $id = $this->connection->lastInsertId();
         return is_numeric($id) ? (int) $id : 0;
     }
-    
+
 }

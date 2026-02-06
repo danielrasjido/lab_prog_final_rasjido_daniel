@@ -7,7 +7,7 @@ use app\core\model\dao\base\InterfaceDAO;
 use Exception;
 use PDO;
 
-final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
+final class UsuarioDAO extends BaseDAO {
 
     public function __construct(?PDO $connection)
     {
@@ -18,7 +18,8 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
      * Carga un usuario de la base de datos.
      * @param id Id del usuario que se quiere mostrar.
      */
-    public function load(int $id):array{
+    public function load(int $id):array
+    {
 
         $arreglo = [];
 
@@ -36,7 +37,8 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
      * Crea un usuario nuevo.
      * @param data Array con todos los campos de la tabla de usuario. 
      */
-    public function save(array $data):void{
+    public function save(array $data):void
+    {
      
         //validar que no exista otro usuario con la misma cuenta o correo
         $consulta = "SELECT COUNT(*) AS cantidad 
@@ -94,7 +96,8 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
      * Actualiza un usuario en función del ID.
      * @param data Array con los campos de la tabla usuario.
      */
-    public function update(array $data):void{
+    public function update(array $data):void
+    {
 
         $sql = 
         "UPDATE {$this->table} SET
@@ -129,7 +132,8 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
      * Elimina un usuario de la base de datos en función del Id de usuario.
      * @param id Identificador de usuario.
      */
-    public function delete(int $id):void{
+    public function delete(int $id):void
+    {
         $sql = "DELETE FROM {$this->table} WHERE idUsuario = :id";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute(["id" => (Int)$id]);
@@ -147,7 +151,8 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
      *
      * @return array Lista de usuarios encontrados
      */
-    public function list(array $filters):array{
+    public function list(array $filters):array
+    {
         //filtrar por nombre, apellido, tipo de cuenta, correo y estado.
         $resultado = [];
         $parametros = [];
@@ -186,20 +191,30 @@ final class UsuarioDAO extends BaseDAO implements InterfaceDAO{
         return $resultado;
     }
 
-    public function suggestive(array $filters):array{
-        return [];
-    }
+    public function suggestive(array $filters): array
+    {
+        
+        $sql = "SELECT idUsuario, nombre, apellido, correo FROM {$this->table} WHERE 1 = 1";
 
-    public function foundRows():int{
-        return 0;
-    }
+        $parametros = [];
+        $resultado = [];
 
-    public function countRows():int{
-        return 0;
-    }
+        if(!empty($filters['query'])){
+            $sql .= " AND (
+                nombre LIKE :q,
+                OR apellido LIKE :q,
+            )";
 
-    public function getLastInsertId():int{
-        return 0;
+            $parametros['q'] = '%' . $filters['query'] . '%';
+        }
+
+        $sql .= " ORDER BY apellido, nombre LIMIT 10";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($parametros);
+        $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $resultado;
     }
 
 }
