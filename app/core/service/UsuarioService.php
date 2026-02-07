@@ -32,7 +32,8 @@ final class UsuarioService implements InterfaceService{
 
     public function delete(InterfaceDto $dto):void{
         $data = $dto->toArray();
-        $this->dao->delete($data["idUsuario"]);
+        $id = $data['idUsuario'];
+        $this->dao->delete($id);
     }
     
     public function list(array $filters):array{

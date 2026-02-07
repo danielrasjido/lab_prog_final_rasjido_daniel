@@ -8,11 +8,12 @@ final class UsuarioDTO implements InterfaceDto{
 
     public function __construct(array $data = []){
     if(!empty($data)){
-        $this->setId($data['id'] ?? 0);
+        $this->setId($data['idUsuario'] ?? 0);
         $this->setIdPerfil($data['idPerfil'] ?? 0);
         $this->setApellido($data['apellido'] ?? '');
         $this->setNombre($data['nombre'] ?? '');
         $this->setCuenta($data['cuenta'] ?? '');
+        $this->setEstado($data['estado'] ?? 1);
         $this->setPassword($data['password'] ?? '');
         $this->setCorreo($data['correo'] ?? '');
         $this->setResetPassword($data['resetPassword'] ?? 0);
@@ -112,7 +113,7 @@ final class UsuarioDTO implements InterfaceDto{
             'estado'    => $this->estado,
             'password'  => $this->password,
             'correo'    => $this->correo,
-            'resetPasswrod' => $this->resetPassword,
+            'resetPassword' => $this->resetPassword,
         ];
     }
 }
