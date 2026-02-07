@@ -1,24 +1,29 @@
 <?php
 
-// =====================
-// INCLUDES MANUALES
-// =====================
-require_once __DIR__ . '/../app/config/DBConfig.php';
-
-require_once __DIR__ . '/../app/libs/database/Connection.php';
-
-require_once __DIR__ . '/../app/core/model/dao/base/InterfaceDAO.php';
-require_once __DIR__ . '/../app/core/model/dao/base/BaseDAO.php';
-require_once __DIR__ . '/../app/core/model/dao/UsuarioDAO.php';
-
-require_once __DIR__ . '/../app/core/model/dto/base/InterfaceDto.php';
-require_once __DIR__ . '/../app/core/model/dto/UsuarioDTO.php';
-
-require_once __DIR__ . '/../app/core/service/base/InterfaceService.php';
-require_once __DIR__ . '/../app/core/service/UsuarioService.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+use app\core\model\dao\UsuarioDAO;
+use app\core\model\dto\UsuarioDTO;
+use app\libs\database\Connection;
+use app\core\service\UsuarioService;
 
 echo "===== TEST UsuarioService =====\n";
 $service = new UsuarioService();
 $usuario = $service->load(1);
-var_dump($usuario);
+
+echo print_r($usuario);
+
+$d1 = [
+    "idPerfil"  => 3,
+    "apellido"  => "Gomez",
+    "nombre"    => "David",
+    "cuenta"    => "davo.xeneize",
+    "password"  => "12345678",
+    "correo"    => "davo@gmail.com",
+    "resetPassword" => 0
+];
+
+$u1 = new UsuarioDTO($d1);
+
+$service->save($u1);
+
 echo "\n===== FIN TEST UsuarioService =====\n";

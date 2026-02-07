@@ -1,5 +1,7 @@
 <?php
 
+namespace app\core\service;
+
 use app\core\model\dao\base\InterfaceDAO;
 use app\core\model\dao\UsuarioDAO;
 use app\core\model\dto\UsuarioDTO;
