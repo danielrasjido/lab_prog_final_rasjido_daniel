@@ -19,7 +19,8 @@ $d1 = [
     "cuenta"    => "davo.xeneize",
     "password"  => "12345678",
     "correo"    => "davo@gmail.com",
-    "resetPassword" => 0
+    "resetPassword" => 0,
+    "estado"    => 1
 ];
 
 $u1 = new UsuarioDTO($d1);

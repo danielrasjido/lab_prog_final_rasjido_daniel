@@ -4,7 +4,7 @@ namespace app\core\model\dto;
 use app\core\model\dto\base\InterfaceDto;
 
 final class UsuarioDTO implements InterfaceDto{
-    private $idUsuario, $idPerfil, $apellido, $nombre, $cuenta, $password, $correo;
+    private $idUsuario, $idPerfil, $apellido, $nombre, $cuenta, $estado, $password, $correo, $resetPassword;
 
     public function __construct(array $data = []){
     if(!empty($data)){
@@ -12,8 +12,10 @@ final class UsuarioDTO implements InterfaceDto{
         $this->setIdPerfil($data['idPerfil'] ?? 0);
         $this->setApellido($data['apellido'] ?? '');
         $this->setNombre($data['nombre'] ?? '');
+        $this->setCuenta($data['cuenta'] ?? '');
         $this->setPassword($data['password'] ?? '');
         $this->setCorreo($data['correo'] ?? '');
+        $this->setResetPassword($data['resetPassword'] ?? 0);
     }
 }
 
@@ -40,12 +42,22 @@ final class UsuarioDTO implements InterfaceDto{
         return $this->cuenta;
     }
 
+    public function getEstado(): int
+    {
+        return $this->estado;
+    }
+
     public function getPassword(): string{
         return $this->password;
     }
 
     public function getCorreo(): string{
         return $this->correo;
+    }
+
+    public function getResetPassword(): int
+    {
+        return $this->resetPassword;
     }
 
     // SETTERS
@@ -70,12 +82,22 @@ final class UsuarioDTO implements InterfaceDto{
         $this->cuenta = trim($cuenta);
     }
 
+    public function setEstado(int $estado): void
+    {
+        $this->estado = $estado;
+    }
+
     public function setPassword(string $password): void{
         $this->password = $password;
     }
 
     public function setCorreo(string $correo): void{
         $this->correo = filter_var($correo, FILTER_VALIDATE_EMAIL) ? $correo : '';
+    }
+
+    public function setResetPassword(Int $resetPassword): void
+    {
+        $this->resetPassword = $resetPassword;
     }
 
     // SERIALIZACIÓN
@@ -87,8 +109,10 @@ final class UsuarioDTO implements InterfaceDto{
             'apellido'  => $this->apellido,
             'nombre'    => $this->nombre,
             'cuenta'    => $this->cuenta,
+            'estado'    => $this->estado,
             'password'  => $this->password,
-            'correo'    => $this->correo
+            'correo'    => $this->correo,
+            'resetPasswrod' => $this->resetPassword,
         ];
     }
 }
