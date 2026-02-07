@@ -98,4 +98,23 @@ final class Request{
         return $value;
     }
 
+    /**
+     * Obtiene los datos enviados en el body de la petición HTTP.
+     *
+     * Este método se utiliza principalmente para peticiones que envían
+     * información en formato JSON como podria ser fetch().
+     *
+     * Lee el contenido crudo del body mediante "php://input" y lo convierte
+     * en array.
+     *
+     * Ejemplo de uso:
+     * - Peticiones POST con Content-Type: application/json
+     *
+     * @return array|null Array asociativo con los datos decodificados,
+     *                    o null si el body está vacío o el JSON es inválido.
+     */
+    public function getDataFromInput(): ?array{
+        return json_decode(file_get_contents("php://input"), true);
+    }
+
 }
