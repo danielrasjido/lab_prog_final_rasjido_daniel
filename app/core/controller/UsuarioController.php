@@ -72,7 +72,7 @@ final class UsuarioController extends BaseController implements InterfaceControl
         $resultados = $this->service->list($filtros);
 
 
-        $response->setMessage($resultados);
+        $response->setResult($resultados);
         $response->send();
     }
 }
