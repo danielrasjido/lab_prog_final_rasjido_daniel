@@ -21,7 +21,10 @@ final class app{
     public static function run(){
         $pipeline = new Pipeline();
 
-        $pipeline->pipe(new RouterHandlerMiddleware());
+
+        $pipeline
+        ->pipe(new ExceptionHandlerMiddleware())
+        ->pipe(new RouterHandlerMiddleware());
 
         $pipeline->process(new Request(), new Response());
     }

@@ -4,7 +4,7 @@ namespace app\core\model\dao\base;
 
 interface InterfaceDAO{
 
-    public function load(int $id):array;
+    public function load(int $id):array|false;
 
     public function save(array $data):void;
     

@@ -14,7 +14,7 @@ abstract class BaseDAO implements InterfaceDAO{
 
     //MÉTODOS CRUD
 
-   abstract public function load(int $id):array;
+   abstract public function load(int $id):array|false;
 
    abstract public function save(array $data):void;
   

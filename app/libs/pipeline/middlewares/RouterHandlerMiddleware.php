@@ -49,7 +49,7 @@ final class RouterHandlerMiddleware extends BaseMiddleware implements InterfaceM
         $controller = ucfirst($request->getController() . "Controller");
         
         //Arma la ruta dinamicamente: app\\core\\controller\\UsuarioController
-        $controller = "app\\core\\controller" . $controller;
+        $controller = "app\\core\\controller\\" . $controller;
 
         //Validamos que el controlador y la acción existan
         if(!class_exists($controller) || !method_exists($controller, $request->getAction()))

@@ -18,7 +18,7 @@ final class UsuarioDAO extends BaseDAO {
      * Carga un usuario de la base de datos.
      * @param id Id del usuario que se quiere mostrar.
      */
-    public function load(int $id):array
+    public function load(int $id):array|false
     {
 
         $arreglo = [];
@@ -27,7 +27,7 @@ final class UsuarioDAO extends BaseDAO {
         $stmt = $this->connection->prepare($consulta);
         $stmt->execute([":id" => $id]);
 
-        $arreglo = $stmt->fetch(PDO::FETCH_ASSOC);
+        $arreglo = $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
 
 
         return $arreglo;

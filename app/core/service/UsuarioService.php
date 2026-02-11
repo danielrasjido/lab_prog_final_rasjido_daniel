@@ -8,6 +8,7 @@ use app\core\model\dto\UsuarioDTO;
 use app\core\model\dto\base\InterfaceDto;
 use app\core\service\base\InterfaceService;
 use app\libs\database\Connection;
+use Exception;
 
 final class UsuarioService implements InterfaceService{
 
@@ -19,7 +20,14 @@ final class UsuarioService implements InterfaceService{
     }
 
     public function load(int $id):InterfaceDto{
-        return new UsuarioDTO($this->dao->load($id));
+
+        $data = $this->dao->load($id);
+
+        if($data === false){
+            throw new \Exception("Usuario no encontrado.");
+        }
+
+        return new UsuarioDTO($data);
     }
 
     public function save(InterfaceDto $dto):void{
