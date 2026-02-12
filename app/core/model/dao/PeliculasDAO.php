@@ -12,16 +12,16 @@ final class PeliculasDAO extends BaseDAO{
     protected $connection;
     protected $table;
 
-    public function __construct(?\PDO $connection, string $table){
+    public function __construct(?\PDO $connection){
         $this->connection = $connection;
-        $this->table = $table;
+        $this->table = 'peliculas';
     }
 	
 	public function load(int $id): array|false
     {
 		$arreglo = [];
 
-        $consulta = "SELECT * FROM {$this->table} WHERE idUsuario = :id";
+        $consulta = "SELECT * FROM {$this->table} WHERE idPelicula = :id";
         $stmt = $this->connection->prepare($consulta);
         $stmt->execute([":id" => $id]);
 
@@ -47,7 +47,7 @@ final class PeliculasDAO extends BaseDAO{
         actores,
         genero,
         pais,
-        idiomas
+        idiomas,
         calificacion) VALUES (
         :nombre,
         :tituloOriginal,
@@ -61,7 +61,7 @@ final class PeliculasDAO extends BaseDAO{
         :actores,
         :genero,
         :pais,
-        :idiomas
+        :idiomas,
         :calificacion)";
 
         $stmt = $this->connection->prepare($sql);
