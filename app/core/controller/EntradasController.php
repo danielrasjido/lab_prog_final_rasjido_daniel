@@ -1,0 +1,85 @@
+<?php
+
+namespace app\core\controller;
+
+use app\core\model\dto\EntradasDTO;
+use app\core\controller\base\BaseController;
+use app\core\controller\base\InterfaceController;
+use app\core\service\EntradasService;
+use app\libs\http\Request;
+use app\libs\http\Response;
+
+final class EntradasController extends BaseController implements InterfaceController{
+    private $service;
+
+    public function __construct($scripts = [])
+    {
+        parent::__construct($scripts);
+        $this->service = new EntradasService();
+    }
+
+    public function index(Request $request, Response $response):void{
+        throw new \Exception("No se ha implementado la función index en EntradasController.");
+    }
+
+    public function load(Request $request, Response $response):void
+    {
+        $dto = $this->service->load((Int)$request->getId());
+        $response->setResult($dto->toArray());
+        $response->send();
+
+    }
+
+    public function create(Request $request, Response $response):void
+    {
+        throw new \Exception("No se ha implementado la función create en EntradasController.");
+    }
+
+    public function save(Request $request, Response $response):void
+    {
+        $dto = new EntradasDTO($request->getDataFromInput());
+        $this->service->save($dto);
+
+        $response->setMessage("<p>Se agregó una nueva entrada al sistema.</p>");
+        $response->send();
+    }
+
+    public function edit(Request $request, Response $response):void{
+        throw new \Exception("No se ha implementado la función edit en EntradasController.");
+    }
+
+    public function update(Request $request, Response $response):void{
+        $dto = new EntradasDTO($request->getDataFromInput());
+        $this->service->update($dto);
+
+        $response->setMessage("<p>Se actualizó la entrada correspondiente.</p>");
+        $response->send();
+    }
+
+    public function delete(Request $request, Response $response):void{
+
+        //guardamos en un dto la entrada correspondiente, el id viene en la URL con metodo GET
+        $dto = $this->service->load(((Int)$request->getId()));
+
+        $this->service->delete($dto);
+
+        $response->setMessage("<p>Se eliminó la entrada correspondiente.</p>");
+        $response->send();
+    }
+
+    public function list(Request $request, Response $response):void
+    {
+        $filtros = [];
+        $resultados = [];
+
+        $filtros = $request->getDataFromInput();
+        $resultados = $this->service->list($filtros);
+
+        $response->setResult($resultados);
+        $response->send();
+    }
+
+
+
+
+}
