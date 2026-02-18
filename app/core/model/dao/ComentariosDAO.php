@@ -16,15 +16,11 @@ final class ComentariosDAO extends BaseDAO{
 
     public function load(int $id): array|false
     {
-        $arreglo = [];
-
         $consulta = "SELECT * FROM {$this->table} WHERE idComentario = :id";
         $stmt = $this->connection->prepare($consulta);
         $stmt->execute([":id" => $id]);
 
-        $arreglo = $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
-
-        return $arreglo;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function save(array $data): void

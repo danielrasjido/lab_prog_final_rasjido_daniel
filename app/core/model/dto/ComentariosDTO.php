@@ -66,6 +66,12 @@ final class ComentariosDTO implements InterfaceDto{
     // SERIALIZACIÓN
 
     public function toArray():array{
-        return [];
+        return [
+            'idComentario' => $this->idComentario,
+            'idUsuario' => $this->idUsuario,
+            'idPelicula' => $this->idPelicula,
+            'comentario' => $this->comentario,
+            'fechaHora' => $this->fechaHora->format('Y-m-d H:i:s')
+        ];
     }
 }
