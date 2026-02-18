@@ -104,6 +104,7 @@ final class PeliculasDAO extends BaseDAO{
 
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
+            "idPelicula"        => $data["idPelicula"],
             "nombre"            => $data["nombre"],
             "tituloOriginal"    => $data["tituloOriginal"],
             "duracion"          => $data["duracion"],

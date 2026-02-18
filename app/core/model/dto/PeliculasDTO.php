@@ -149,7 +149,7 @@ final class PeliculasDTO implements InterfaceDto{
         $this->idiomas = trim($idiomas);
     }
 
-    public function setCalificacion(int $calificacion): void{
+    public function setCalificacion(String $calificacion): void{
         $this->calificacion = ($calificacion >= 0 && $calificacion <= 10) ? $calificacion : 0;
     }
 
