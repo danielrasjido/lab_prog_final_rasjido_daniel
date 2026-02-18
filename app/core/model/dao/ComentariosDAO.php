@@ -29,6 +29,7 @@ final class ComentariosDAO extends BaseDAO{
 
     public function save(array $data): void
     {
+        //aca no tocamos el id, de eso se encarga mysql
         $sql = "INSERT INTO {$this->table} (
             idUsuario,
             idPelicula,
@@ -61,11 +62,11 @@ final class ComentariosDAO extends BaseDAO{
 
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
+            ":idComentario" => $data["idComentario"],
             ":idUsuario" => $data["idUsuario"],
             ":idPelicula" => $data["idPelicula"],
             ":comentario" => $data["comentario"],
-            ":fechaHora" => $data["fechaHora"],
-            ":idComentario" => $data["idComentario"]
+            ":fechaHora" => $data["fechaHora"]
         ]);
     }
 

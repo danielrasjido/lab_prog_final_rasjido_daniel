@@ -163,8 +163,8 @@ final class PeliculasDAO extends BaseDAO{
             $parametros["idiomas"] = $filters["idiomas"];
         }
 
-        if(isset($filters["calificacion"])){
-            $sql .= " AND calificacion >= :calificacion";
+        if(!empty($filters["calificacion"])){
+            $sql .= " AND calificacion = :calificacion";
             $parametros["calificacion"] = $filters["calificacion"];
         }
 

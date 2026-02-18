@@ -47,12 +47,22 @@ final class PeliculasController extends BaseController implements InterfaceContr
         $dto = new PeliculasDTO($request->getDataFromInput());
         $this->service->update($dto);
 
-        $response->setMessage("<p>Se añadió una nueva película al sistema.</p>");
+        $response->setMessage("<p>Se actualizó la pelicula correctamente.</p>");
         $response->send();
     }
     public function delete(Request $request, Response $response):void{
-        $dto = $this->service->load(((Int)$request->getId()));
+        $id = (int)($request->getId() ?? 0);
 
+        if($id <= 0){
+            $data = $request->getDataFromInput() ?? [];
+            $id = (int)($data['idPelicula'] ?? 0);
+        }
+
+        if($id <= 0){
+            throw new \Exception("Debe enviar un id válido para eliminar una película.");
+        }
+
+        $dto = $this->service->load($id);
         $this->service->delete($dto);
 
         $response->setMessage("<p>Se eliminó la pelicula correspondiente.</p>");

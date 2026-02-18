@@ -1,69 +1,62 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+declare(strict_types=1);
 
 use app\core\model\dto\PeliculasDTO;
 use app\core\service\PeliculasService;
-use app\core\controller\PeliculasController;
 
-try{
+require_once __DIR__ . '/../app/config/DBConfig.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-    $pService = new PeliculasService();
+try {
+    /*
 
+    "result": {
+        "idPelicula": 1,
+        "nombre": "El Viaje Final",
+        "tituloOriginal": "The Final Journey",
+        "duracion": 125,
+        "fechaEstreno": "2022-06-15",
+        "disponibilidad": 1,
+        "fechaIngreso": "2024-08-01",
+        "sitioWeb": "https://www.elviajefinal.com",
+        "sinopsis": "Una aventura épica sobre el destino y la redención.",
+        "imagenCartelera": "viaje_final.jpg",
+        "actores": "Actor Uno, Actor Dos",
+        "genero": "Aventura",
+        "pais": "Estados Unidos",
+        "idiomas": "Español, Inglés",
+        "calificacion": 0
+    }
+     
+     */
     $pelicula = [
-        'idPelicula' => 7,
-        'nombre' => 'El Padrino',
-        'tituloOriginal' => 'The Godfather',
-        'duracion' => 175,
-        'fechaEstreno' => '1972-03-24',
-        'disponibilidad' => 1,
-        'fechaIngreso' => date('Y-m-d'),
-        'sitioWeb' => 'https://www.thegodfather.com',
-        'sinopsis' => 'La historia de la familia Corleone, una de las más poderosas familias mafiosas de Nueva York.',
-        'imagenCartelera' => 'https://example.com/godfather.jpg',
-        'actores' => 'Marlon Brando, Al Pacino, James Caan',
-        'genero' => 'Crimen, Drama',
-        'pais' => 'Estados Unidos',
-        'idiomas' => 'Inglés, Italiano',
-        'calificacion' => "R15"
-    ];  
-    
-    $peliculaDto = new PeliculasDTO($pelicula);
-    $peliculaDto->setNombre("Cumbres borrascosas");
-    $peliculaDto->setActores("Margot Robbie");
-    $peliculaDto->setTituloOriginal("ASDKJLAFKLDSJFKJLD");
-
-    
-   // echo json_encode($pService->list(["calificacion" => "8.5"]));
-
-    
-
-    $controller = new PeliculasController();
-
-    $pelicula2 = [
-        "idPelicula" => 7,
-        "nombre" => "Crepusculo",
-        "tituloOriginal" => "Twilight",
-        "duracion" => 120,
-        "fechaEstreno" => "2008-11-21",
+        "nombre" => "Matrix",
+        "tituloOriginal" => "The Matrix",
+        "duracion" => 136,
+        "fechaEstreno" => "1999-03-31",
         "disponibilidad" => 1,
-        "fechaIngreso" => date('Y-m-d'),
-        "sitioWeb" => "https://www.twilight.com",
-        "sinopsis" => "La historia de amor entre una humana y un vampiro.",
-        "imagenCartelera" => "https://example.com/twilight.jpg",
-        "actores" => "Kristen Stewart, Robert Pattinson, Taylor Lautner",
-        "genero" => "Romance, Fantasía",
+        "fechaIngreso" => "2024-08-01",
+        "sitioWeb" => "https://www.lamatrix.com",
+        "sinopsis" => "Un hacker descubre la verdad sobre su realidad y su papel en la guerra contra sus controladores.",
+        "imagenCartelera" => "matrix.jpg",
+        "actores" => "Keanu Reeves, Laurence Fishburne",
+        "genero" => "Ciencia Ficción",
         "pais" => "Estados Unidos",
-        "idiomas" => "Inglés",
+        "idiomas" => "Español, Inglés",
         "calificacion" => "PG-13"
     ];
 
+    $pService = new PeliculasService();
+    $dto = new PeliculasDTO($pelicula);
+    $dto->setIdPelicula(5);
+    $pService->delete($dto);
 
-    $controller->save(new PeliculasDTO($pelicula2));
+
+    
 
 
 
-
-}catch(\Exception $ex){
-    echo print_r($ex->getMessage());
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
 }
