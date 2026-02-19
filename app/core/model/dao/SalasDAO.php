@@ -7,6 +7,9 @@ use app\core\model\dao\base\InterfaceDAO;
 use Exception;
 use PDO;
 
+// 19/2, 03:04am, habian errores en el save ya que la tabla salas no tenia id autoincremental,
+// ademas el update no bindeaba el idSala, lo cual hacia que no se actualizara nada. dou
+//estoy cansado, será que realmente voy a llegar aterminar esto a tiempo? 
 final class SalasDAO extends BaseDAO {
 
     public function __construct(?PDO $connection)
