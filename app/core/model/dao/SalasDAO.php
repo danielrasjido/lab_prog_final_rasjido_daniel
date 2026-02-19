@@ -61,13 +61,14 @@ final class SalasDAO extends BaseDAO {
     public function update(array $data):void
     {
         $sql = "UPDATE {$this->table} SET
-        capacidad,
-        estado
+        capacidad = :capacidad,
+        estado = :estado
         WHERE idSala = :idSala
         ";
 
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
+            "idSala"        => $data["idSala"],
             "capacidad"     => $data["capacidad"],
             "estado"        => $data["estado"]
         ]);
