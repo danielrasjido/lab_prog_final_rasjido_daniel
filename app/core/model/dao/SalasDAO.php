@@ -90,23 +90,37 @@ final class SalasDAO extends BaseDAO {
         $stmt->execute(["id" => $id]);
     }
 
+
+    //arreglar list
     public function list(Array $filters):array
     {
+
+        $resultado = [];
+        $parametros = [];
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
+
+
+
+        if(isset($filters["idSala"])){
+            $sql .= " AND idSala = :idSala";
+            $parametros["idSala"] = $filters["idSala"];
+        }
 
         if(isset($filters["estado"])){
             $sql .= " AND estado = :estado";
+            $parametros["estado"] = $filters["estado"];
+        }
+
+        if(isset($filters["capacidad"])){
+            $sql .= " AND capacidad = :capacidad";
+            $parametros["capacidad"] = $filters["capacidad"];
         }
 
         $stmt = $this->connection->prepare($sql);
+        $stmt->execute($parametros);
+        $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        if(isset($filters["estado"])){
-            $stmt->bindValue(":estado", $filters["estado"], PDO::PARAM_INT);
-        }
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
     }
 
 
