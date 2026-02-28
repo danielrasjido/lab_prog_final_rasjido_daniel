@@ -10,7 +10,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
     /*
-
+    
     "result": {
         "idPelicula": 1,
         "nombre": "El Viaje Final",
