@@ -1,65 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Daniel-Rasjido">
     <meta name="aplication-name" content="Sistema de Cine">
     <meta name="description" content="Sistema de gestión de cine para administrar películas, funciones, usuarios y entradas.">
-    <base href="<?= APP_URL ?>">
 
-    <link rel="stylesheet" href= "http://localhost/lab_prog_final_rasjido_daniel/public/app/css/bootstrap.min.css">
+    <!-- AGREGAR BASE MAS AADELANTE-->
+
+    <link rel="stylesheet" href="http://localhost/lab_prog_final_rasjido_daniel/public/app/css/bootstrap.min.css">
     <script src="http://localhost/lab_prog_final_rasjido_daniel/public/app/js/bootstrap"></script>
     <title>Sistema de Cine</title>
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Header -->
 
     <header>
-        
+
         <div id="contenedor1">
-            <span>LOGO</span>
-            <nav>
-        
-                <ul>
-                    <li><a href="">Navigation</a></li>
-                    <li><a href="">Navigation</a></li>
-                    <li><a href="">Navigation</a></li>
-                    <li><a href="">Navigation</a></li>
-                </ul>
+            <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Usuarios</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Comentarios</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Entradas</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Funciones</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Peliculas</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Programacion</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Salas</a>
+                            </li>
+
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                            <button class="btn btn-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
             </nav>
         </div>
 
     </header>
 
     <!-- Main -->
+    <main class="flex-grow-1"></main>
 
     <!-- Footer -->
 
-    <footer>
-
-        <div id="contenedor8">
-            <nav>
-                <ul>
-                    <li><a href="#">QUICK LINK</a></li>
-                    <li><a href="#">QUICK LINK</a></li>
-                    <li><a href="#">QUICK LINK</a></li>
-                </ul>
-            </nav>
-    
-            <span>LOGO</span>
-    
-            <nav>
-                <ul>
-                    <li><a href="#">SOCIAL MEDIA</a></li>
-                    <li><a href="#">CONTACT</a></li>
-                    <li><a href="#">LOCATION</a></li>
-                </ul>
-            </nav>
+    <footer class="bg-primary text-light py-3 mt-auto">
+        <div class="container text-center">
+            <small>&copy; 2026 Sistema de Cine. Todos los derechos reservados.</small>
         </div>
-
     </footer>
-    
+
 </body>
+
 </html>
