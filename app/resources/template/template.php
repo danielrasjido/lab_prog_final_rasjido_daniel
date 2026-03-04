@@ -14,17 +14,17 @@
 
     ?>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <header>
         <?php
 
-            require_once APP_DIR_TEMPLATE . 'includes/header.php';
+            require_once APP_DIR_TEMPLATE . 'includes/menu.php';
 
         ?>
     </header>
 
-    <body>
+    <main>
         
         <?php
 
@@ -32,9 +32,10 @@
 
         ?>
 
-    </body>
 
-    <footer>
+    </main>
+
+    <footer class="bg-primary text-light py-3 mt-auto">
         <?php
 
             require_once APP_DIR_TEMPLATE . 'includes/footer.php';

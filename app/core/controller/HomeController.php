@@ -1,6 +1,6 @@
 <?php
 
-namespace app\core\controllers;
+namespace app\core\controller;
 
 use app\core\controller\base\BaseController;
 use app\libs\http\Request;
