@@ -4,7 +4,7 @@
 <meta name="aplication-name" content="Sistema de Cine">
 <meta name="description" content="Sistema de gestión de cine para administrar películas, funciones, usuarios y entradas.">
 
-<base href="<?= APP_URL ?>">
+<base href="<?= APP_URL ?>/">
 
 <link rel="stylesheet" href="http://localhost/lab_prog_final_rasjido_daniel/public/app/css/bootstrap.min.css">
 <script src="http://localhost/lab_prog_final_rasjido_daniel/public/app/js/bootstrap"></script>
