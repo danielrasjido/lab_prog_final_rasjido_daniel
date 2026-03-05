@@ -21,7 +21,10 @@ final class UsuarioController extends BaseController implements InterfaceControl
 
 
     public function index(Request $request, Response $response):void{
+        array_push($this->scripts, "app/js/user/index.js");
 
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
     public function load(Request $request, Response $response):void
     {
@@ -32,7 +35,9 @@ final class UsuarioController extends BaseController implements InterfaceControl
     }
     public function create(Request $request, Response $response):void
     {
-        
+        array_push($this->scripts, "app/js/user/create.js");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     } 
     public function save(Request $request, Response $response):void
     {
@@ -43,7 +48,9 @@ final class UsuarioController extends BaseController implements InterfaceControl
         $response->send();
     }
     public function edit(Request $request, Response $response):void{
-
+        array_push($this->scripts, "app/js/user/edit.js");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
     public function update(Request $request, Response $response):void{
         $dto = new UsuarioDTO($request->getDataFromInput());
