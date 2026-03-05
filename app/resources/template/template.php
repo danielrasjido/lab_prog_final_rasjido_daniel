@@ -7,7 +7,7 @@
 
         if(isset($this->scripts) && is_array($this->scripts)) {
             foreach($this->scripts as $script) {
-                echo '<script src="' . APP_URL . $script . '"></script>';
+                echo '<script type="module" src="' . APP_URL . $script . '"></script>';
             }
         }
 

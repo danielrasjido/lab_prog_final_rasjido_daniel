@@ -21,7 +21,7 @@ final class UsuarioController extends BaseController implements InterfaceControl
 
 
     public function index(Request $request, Response $response):void{
-        array_push($this->scripts, "app/js/user/index.js");
+        array_push($this->scripts, "/app/js/usuarios/index.js");
 
         $this->setCurrentView($request);
         require_once APP_FILE_TEMPLATE;
@@ -35,7 +35,7 @@ final class UsuarioController extends BaseController implements InterfaceControl
     }
     public function create(Request $request, Response $response):void
     {
-        array_push($this->scripts, "app/js/user/create.js");
+        array_push($this->scripts, "/app/js/usuarios/create.js");
         $this->setCurrentView($request);
         require_once APP_FILE_TEMPLATE;
     } 
@@ -48,7 +48,7 @@ final class UsuarioController extends BaseController implements InterfaceControl
         $response->send();
     }
     public function edit(Request $request, Response $response):void{
-        array_push($this->scripts, "app/js/user/edit.js");
+        array_push($this->scripts, "app/js/usuarios/edit.js");
         $this->setCurrentView($request);
         require_once APP_FILE_TEMPLATE;
     }

@@ -29,6 +29,7 @@
     </thead>
     <tbody id="cuerpoDeLaTabla">
 
+        <tr>
         <td>nombre del usuario</td>
         <td>nombre de la cuenta</td>
         <td>aca debe ir el tipo de perfil en string</td>
@@ -36,10 +37,33 @@
         <td>Activo / Inactivo</td>
         <td>
             <button class="btn btn-primary">Modificar</button>
-            <button class="btn btn-warning">Eliminar</button>
+            <button class="btn btn-danger">Eliminar</button>
         </td>
         </tr>
+
+        <tr>
+            <td>Juan Perez</td>
+            <td>Cuenta de Juan</td>
+            <td>Administrador</td>
+            <td>juan.perez@gmail.com</td>
+            <td>Activo</td>
+            <td>
+                <button class="btn btn-primary">Modificar</button>
+                <button class="btn btn-danger">Eliminar</button>
+            </td>
+        </tr>
         
+        <tr>
+            <td>Helena Gomez</td>
+            <td>Cuenta de Helena</td>
+            <td>Usuario</td>
+            <td>helena.gomez@gmail.com</td>
+            <td>Inactivo</td>
+            <td>
+                <button class="btn btn-primary">Modificar</button>
+                <button class="btn btn-danger">Eliminar</button>
+            </td>
+        </tr>
         
     </tbody>
 </table>
