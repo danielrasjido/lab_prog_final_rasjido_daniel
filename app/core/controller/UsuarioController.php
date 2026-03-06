@@ -48,7 +48,7 @@ final class UsuarioController extends BaseController implements InterfaceControl
         $response->send();
     }
     public function edit(Request $request, Response $response):void{
-        array_push($this->scripts, "app/js/usuarios/edit.js");
+        array_push($this->scripts, "/app/js/usuarios/edit.js");
         $this->setCurrentView($request);
         require_once APP_FILE_TEMPLATE;
     }

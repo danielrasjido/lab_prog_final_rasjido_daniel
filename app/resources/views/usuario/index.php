@@ -29,7 +29,7 @@
     </thead>
     <tbody id="cuerpoDeLaTabla">
 
-        <tr>
+        <!-- <tr>
         <td>nombre del usuario</td>
         <td>nombre de la cuenta</td>
         <td>aca debe ir el tipo de perfil en string</td>
@@ -63,7 +63,7 @@
                 <button class="btn btn-primary">Modificar</button>
                 <button class="btn btn-danger">Eliminar</button>
             </td>
-        </tr>
+        </tr> -->
         
     </tbody>
 </table>

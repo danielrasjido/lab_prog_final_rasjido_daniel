@@ -7,4 +7,30 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     userController.list();
 
+    //boton modificar
+
+    const btnModificar = document.getElementById("btnModificar")
+
+    //boton eliminar
+
+    //en realidad, esto solo sirve si los botones no fueron cargados dinamicamente, pero fue buen intento 
+    //onst botonesEliminar = document.querySelectorAll(".btnEliminar");
+    //botonesEliminar.forEach()
+
+    document.getElementById("cuerpoDeLaTabla").addEventListener("click", (e) =>{
+        if(e.target.classList.contains("btnEliminar")){
+            const idUsuario = parseInt(e.target.dataset.idUsuario);
+            console.log("Boton presionado :), usuario: ", idUsuario);
+        }
+    });
+
+    //boton pdf
+
+    const btnPdf = document.getElementById("btnGenerarPDF");
+    btnPdf.addEventListener("click", e => {
+        alert("generar pdf :s");
+    })
+
+    //boton buscar
+
 });
