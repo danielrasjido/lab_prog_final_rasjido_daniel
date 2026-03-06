@@ -28,9 +28,25 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     const btnPdf = document.getElementById("btnGenerarPDF");
     btnPdf.addEventListener("click", e => {
-        alert("generar pdf :s");
+        userController.exportToPDF();
     })
 
     //boton buscar
+
+    const btnBuscar = document.getElementById("btnBuscar");
+    btnBuscar.addEventListener("click", () => {
+        
+        const perfil = document.getElementById("btnFiltrarPerfil").value;
+        const estado = document.getElementById("btnFiltrarEstado").value;
+        const busqueda = document.getElementById("datoBusqueda").value;
+        
+       
+        
+
+    
+        
+        userController.list(filters);
+    })
+
 
 });

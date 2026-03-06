@@ -81,9 +81,57 @@ export const userController = {
             })
 
     },
-    exportToPDF: () => { },
-    resetForm: () => { },
-    enableForm: () => { },
+    exportToPDF: () => { 
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Obtener la fecha actual
+        const fecha = new Date().toLocaleDateString('es-AR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
+        //Agregar la fecha al Pdf
+        doc.setFontSize(10);
+        doc.text(`Fecha: ${fecha}`, 160, 10);
+
+        doc.autoTable({
+            html: '#tablaUsuarios',
+            theme: 'grid',
+            headStyles: { fillColor: [41, 128, 185] },
+            margin: { top: 20 },
+        });
+        doc.output('dataurlnewwindow');
+     },
+    resetForm: () => { 
+        //esto carga de nuevo el usuario que habia en la pagina, haciendo uso de la url
+        const params = new URLSearchParams(window.location.search);
+        const urlFinal = params.get("id");
+        userController.load(parseInt(urlFinal));
+        userController.enableForm(false);
+     },
+    enableForm: (estado) => {
+        let listaBotones = document.querySelectorAll('.control');
+        let botonActualizar = document.getElementById("btnActualizar");
+        let botonCancelarEdicion = document.getElementById("btnCancelarEdicion");
+
+
+
+        if (estado) {
+            botonActualizar.disabled = false;
+            botonCancelarEdicion.disabled = false;
+            listaBotones.forEach(boton => {
+                boton.disabled = false;
+            });
+        } else {
+            botonActualizar.disabled = true;
+            botonCancelarEdicion.disabled = true;
+            listaBotones.forEach(boton => {
+                boton.disabled = true;
+            });
+        }
+     },
 }
 
 function mostrarUsuarios(usuarios) {
@@ -186,6 +234,15 @@ function capturarDatosUsuarioSave() {
         default:
             console.error('No se seleccionó un perfil válido');
             return null; 
+    }
+
+    let usuario = {
+        idPerfil: dtPerfilFinal,
+        apellido: dtApellido,
+        nombre: dtNombre,
+        cuenta: dtCuenta,
+        correo: dtCorreo,
+        password: claveFinal
     }
 
     return usuario;
