@@ -14,73 +14,83 @@ Dentro del controlador user/controller.js declare el objeto userController con l
 import { userService } from "./service.js";
 
 export const userController = {
-   load: (id) => {
+    load: (id) => {
 
-    //a partir de un usuario...
+        //a partir de un usuario...
 
-    const usuario = {
-        idUsuario: 1,
-        idPerfil: 1,
-        apellido: "Perez",
-        nombre: "Juan",
-        cuenta: "jperez",
-        estado: "activo",
-        password: "123456",
-        correo: "jperez@gmail.com",
-    }
+        const usuario = {
+            idUsuario: 1,
+            idPerfil: 1,
+            apellido: "Perez",
+            nombre: "Juan",
+            cuenta: "jperez",
+            estado: "activo",
+            password: "123456",
+            correo: "jperez@gmail.com",
+        }
 
-    //validamos el usuario
+        //validamos el usuario
 
-    if (!usuario) {
-        console.error("no existe el usuario");
-        //añadir toast mas adelante
-        return
-    }
+        if (!usuario) {
+            console.error("no existe el usuario");
+            //añadir toast mas adelante
+            return
+        }
 
-    //voy insertando en cada campo del formulario los datos del usuario
+        //voy insertando en cada campo del formulario los datos del usuario
 
-    document.getElementById("datoApellido").value = usuario.apellido;
-    document.getElementById("datoNombre").value = usuario.nombre;
-    document.getElementById("datoCuenta").value = usuario.cuenta;
-    document.getElementById("datoCorreo").value = usuario.correo;
+        document.getElementById("datoApellido").value = usuario.apellido;
+        document.getElementById("datoNombre").value = usuario.nombre;
+        document.getElementById("datoCuenta").value = usuario.cuenta;
+        document.getElementById("datoCorreo").value = usuario.correo;
 
-    switch(usuario.idPerfil){
-        case 1:
-            document.getElementById("perfilAdministrador").checked = true;
-        break;
-        case 2:
-            document.getElementById("perfilOperador").checked = true;
-        break;
-        default:
-            document.getElementById("perfilExterno").checked = true;
-    }
+        switch (usuario.idPerfil) {
+            case 1:
+                document.getElementById("perfilAdministrador").checked = true;
+                break;
+            case 2:
+                document.getElementById("perfilOperador").checked = true;
+                break;
+            default:
+                document.getElementById("perfilExterno").checked = true;
+        }
 
 
-   },
-   save: () => {
+    },
+    save: () => {
+        const usuario = capturarDatosUsuarioSave();
+        userService.save(usuario);
+    },
+    update: () => {
+        const usuario = capturarDatosUsuario();
+        userService.update(usuario);
+     },
+    delete: (id) => { 
+        if(!confirm("¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.")) {
+            return;
+        }
 
-   },
-   update: () => {},
-   delete: (id) => {},
-   list: (filters) => {
+        userService.delete(id);
+     },
+    list: (filters) => {
 
-     userService.list(filters)
+        userService.list(filters)
             .then(response => {
                 const usuarios = response.result;
                 mostrarUsuarios(usuarios);
             })
 
-   },
-   exportToPDF: () => {},
-   resetForm: () => {},
-   enableForm: () => {},
+    },
+    exportToPDF: () => { },
+    resetForm: () => { },
+    enableForm: () => { },
 }
 
-function mostrarUsuarios(usuarios){
+function mostrarUsuarios(usuarios) {
     let tabla = document.getElementById("cuerpoDeLaTabla");
     tabla.innerHTML = '';
 
-    for(let i = 0; i < usuarios.length; i++){
+    for (let i = 0; i < usuarios.length; i++) {
         //guardamos usuario
         let usuario = usuarios[i];
         //creamos fiila
@@ -135,6 +145,47 @@ function capturarDatosUsuario() {
         clave: claveFinal,
         correo: dtCorreo,
         estado: dtEstado === 'Activo' ? true : false,
+    }
+
+    return usuario;
+}
+
+function capturarDatosUsuarioSave() {
+
+
+    const dtApellido = document.getElementById("datoApellido").value.trim();
+    const dtNombre = document.getElementById("datoNombre").value.trim();
+    const dtCuenta = document.getElementById("datoCuenta").value.trim();
+    const dtPerfil = document.getElementById("perfilAdministrador");
+    const dtCorreo = document.getElementById("datoCorreo").value.trim();
+    const dtClave = document.getElementById("datoClave").value.trim();
+    const dtConfirmacionClave = document.getElementById("datoConfirmarClave").value.trim();
+
+
+    let claveFinal = '';
+    if (dtClave === dtConfirmacionClave) {
+        claveFinal = dtConfirmacionClave;
+        console.log("la clave se guardó correctamente");
+    } else {
+        console.log("las claves son diferentes")
+    }
+
+    const perfilSeleccionado = document.querySelector('input[name="datoPerfil"]:checked');
+
+    let dtPerfilFinal = '';
+    switch (perfilSeleccionado?.value) {
+        case 'administrador':
+            dtPerfilFinal = 1;
+            break;
+        case 'operador':
+            dtPerfilFinal = 2;
+            break;
+        case 'externo':
+            dtPerfilFinal = 3;
+            break;
+        default:
+            console.error('No se seleccionó un perfil válido');
+            return null; 
     }
 
     return usuario;
