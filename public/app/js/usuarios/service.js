@@ -42,16 +42,58 @@ const usuarios = [
 
 export const userService = {
     load: (id) =>{
-        return usuarios.find(user => user.idUsuario === id);
+        return fetch(`usuario/load/${id}`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            return data;
+        })
     },
     save: (user) =>{
-        usuarios.push(user);
+        return fetch("usuario/save",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            return data;
+        })
     },
     update: (user) => {
-        
+        return fetch("usuario/update",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            return data;
+        })
     },
     delete: (id) => {
-
+        return fetch(`usuario/delete/${id}`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())  
+        .then(data => {
+            console.log(data);
+            return data;
+        })
     },
     list: () => {
         return fetch("usuario/list",{

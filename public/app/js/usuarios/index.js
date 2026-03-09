@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", () =>{
         const estado = document.getElementById("btnFiltrarEstado").value;
         const busqueda = document.getElementById("datoBusqueda").value;
         
-       
+        
         
 
-    
+        
         
         userController.list(filters);
     })
