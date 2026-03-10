@@ -64,14 +64,14 @@ export const userController = {
     update: () => {
         const usuario = capturarDatosUsuario();
         userService.update(usuario);
-     },
-    delete: (id) => { 
-        if(!confirm("¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.")) {
+    },
+    delete: (id) => {
+        if (!confirm("¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.")) {
             return;
         }
 
         userService.delete(id);
-     },
+    },
     list: (filters) => {
 
         userService.list(filters)
@@ -81,7 +81,7 @@ export const userController = {
             })
 
     },
-    exportToPDF: () => { 
+    exportToPDF: () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
@@ -103,14 +103,14 @@ export const userController = {
             margin: { top: 20 },
         });
         doc.output('dataurlnewwindow');
-     },
-    resetForm: () => { 
+    },
+    resetForm: () => {
         //esto carga de nuevo el usuario que habia en la pagina, haciendo uso de la url
         const params = new URLSearchParams(window.location.search);
         const urlFinal = params.get("id");
         userController.load(parseInt(urlFinal));
         userController.enableForm(false);
-     },
+    },
     enableForm: (estado) => {
         let listaBotones = document.querySelectorAll('.control');
         let botonActualizar = document.getElementById("btnActualizar");
@@ -131,7 +131,7 @@ export const userController = {
                 boton.disabled = true;
             });
         }
-     },
+    },
 }
 
 function mostrarUsuarios(usuarios) {
@@ -220,6 +220,8 @@ function capturarDatosUsuarioSave() {
 
     const perfilSeleccionado = document.querySelector('input[name="datoPerfil"]:checked');
 
+    console.log("perfil ->>>>: ", perfilSeleccionado.value)
+
     let dtPerfilFinal = '';
     switch (perfilSeleccionado?.value) {
         case 'administrador':
@@ -233,7 +235,7 @@ function capturarDatosUsuarioSave() {
             break;
         default:
             console.error('No se seleccionó un perfil válido');
-            return null; 
+            return null;
     }
 
     let usuario = {
@@ -241,9 +243,13 @@ function capturarDatosUsuarioSave() {
         apellido: dtApellido,
         nombre: dtNombre,
         cuenta: dtCuenta,
+        estado: 1,
+        password: claveFinal,
         correo: dtCorreo,
-        password: claveFinal
+        resetPassword: 0
     }
 
+
+    console.table(usuario)
     return usuario;
 }

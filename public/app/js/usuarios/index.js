@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () =>{
         if(e.target.classList.contains("btnEliminar")){
             const idUsuario = parseInt(e.target.dataset.idUsuario);
             userController.delete(idUsuario);
+            userController.list()
         }
     });
 

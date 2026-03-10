@@ -1,5 +1,5 @@
 <main>
-    <form method="POST" autocomplete="off">
+    <form method="POST" autocomplete="off" id="formUsuario">
 
         <div class="mb-3">
             <label for="datoApellido" class="form-label">Apellido</label>
@@ -29,17 +29,17 @@
         <div class="mb-3">
             <label class="form-label">Perfil</label>
             <div>
-                <input class="form-check-input" type="radio" name="datoPerfil" id="perfilAdministrador" required>
+                <input class="form-check-input" type="radio" name="datoPerfil" id="perfilAdministrador" value="administrador" required>
                 <label class="form-check-label" for="perfilAdministrador">
                     Administrador
                 </label>
                 
-                <input class="form-check-input" type="radio" name="datoPerfil" id="perfilOperador">
+                <input class="form-check-input" type="radio" name="datoPerfil" id="perfilOperador" value="operador">
                 <label class="form-check-label" for="perfilOperador">
                     Operador
                 </label>
                 
-                <input class="form-check-input" type="radio" name="datoPerfil" id="perfilExterno">
+                <input class="form-check-input" type="radio" name="datoPerfil" id="perfilExterno" value="externo">
                 <label class="form-check-label" for="perfilExterno">
                     Externo
                 </label>
