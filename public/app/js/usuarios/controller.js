@@ -18,47 +18,59 @@ export const userController = {
 
         //a partir de un usuario...
 
-        const usuario = {
-            idUsuario: 1,
-            idPerfil: 1,
-            apellido: "Perez",
-            nombre: "Juan",
-            cuenta: "jperez",
-            estado: "activo",
-            password: "123456",
-            correo: "jperez@gmail.com",
-        }
+        // const usuario = {
+        //     idUsuario: 1,
+        //     idPerfil: 1,
+        //     apellido: "Perez",
+        //     nombre: "Juan",
+        //     cuenta: "jperez",
+        //     estado: "activo",
+        //     password: "123456",
+        //     correo: "jperez@gmail.com",
+        // }
 
         //validamos el usuario
 
-        if (!usuario) {
-            console.error("no existe el usuario");
-            //añadir toast mas adelante
-            return
-        }
+        userService.load(id)
+            .then(response => {
 
-        //voy insertando en cada campo del formulario los datos del usuario
+                const usuario = response.result;
 
-        document.getElementById("datoApellido").value = usuario.apellido;
-        document.getElementById("datoNombre").value = usuario.nombre;
-        document.getElementById("datoCuenta").value = usuario.cuenta;
-        document.getElementById("datoCorreo").value = usuario.correo;
+                if (!usuario) {
+                    console.error("no existe el usuario");
+                    //añadir toast mas adelante
+                    return
+                }
 
-        switch (usuario.idPerfil) {
-            case 1:
-                document.getElementById("perfilAdministrador").checked = true;
-                break;
-            case 2:
-                document.getElementById("perfilOperador").checked = true;
-                break;
-            default:
-                document.getElementById("perfilExterno").checked = true;
-        }
+                //voy insertando en cada campo del formulario los datos del usuario
+
+                document.getElementById("datoApellido").value = usuario.apellido;
+                document.getElementById("datoNombre").value = usuario.nombre;
+                document.getElementById("datoCuenta").value = usuario.cuenta;
+                document.getElementById("datoCorreo").value = usuario.correo;
+
+                switch (usuario.idPerfil) {
+                    case 1:
+                        document.getElementById("perfilAdministrador").checked = true;
+                        break;
+                    case 2:
+                        document.getElementById("perfilOperador").checked = true;
+                        break;
+                    default:
+                        document.getElementById("perfilExterno").checked = true;
+                }
+            })
+
+
 
 
     },
     save: () => {
         const usuario = capturarDatosUsuarioSave();
+        if (!usuario) {
+            console.log("capturarDatosUsuario() está vacio")
+            return
+        }
         userService.save(usuario);
     },
     update: () => {
