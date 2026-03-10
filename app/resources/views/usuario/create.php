@@ -1,5 +1,5 @@
 <main>
-    <form autocomplete="off">
+    <form method="POST" autocomplete="off">
 
         <div class="mb-3">
             <label for="datoApellido" class="form-label">Apellido</label>

@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     document.getElementById("cuerpoDeLaTabla").addEventListener("click", (e) =>{
         if(e.target.classList.contains("btnEliminar")){
             const idUsuario = parseInt(e.target.dataset.idUsuario);
-            console.log("Boton presionado :), usuario: ", idUsuario);
+            userController.delete(idUsuario);
         }
     });
 
