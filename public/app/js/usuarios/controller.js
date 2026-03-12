@@ -118,9 +118,11 @@ export const userController = {
     },
     resetForm: () => {
         //esto carga de nuevo el usuario que habia en la pagina, haciendo uso de la url
-        const params = new URLSearchParams(window.location.search);
-        const urlFinal = params.get("id");
-        userController.load(parseInt(urlFinal));
+        const url = window.location.pathname.split('/'); //devuelve la url divida en arraay
+        
+        const idFinal = url[url.length - 1]; //devuelve la ultima parte de la url, que es el id
+        
+        userController.load(parseInt(idFinal));
         userController.enableForm(false);
     },
     enableForm: (estado) => {
