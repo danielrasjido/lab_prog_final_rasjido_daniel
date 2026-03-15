@@ -12,9 +12,9 @@ try{
 
     $serviceComentarios = new ComentariosService;
     $comentario = [
-        "idUsuario" => 1,
+        "idUsuario" => 13,
         "idPelicula" => 3,
-        "comentario" => "Este es un comentario de prueba.",
+        "comentario" => "Este es un comentario de prueba 1.",
         "fechaHora" => "2024-08-01 12:00:00"
     ];
 
@@ -27,13 +27,13 @@ try{
 
     //SAVE
 
-    //$serviceComentarios->save($comentarioDTO);
+    $serviceComentarios->save($comentarioDTO);
 
     //UPDATE
 
-    $comentarioDTO->setComentario("Este es un comentario actualizado.");
-    $comentarioDTO->setIdComentario(4);
-    $serviceComentarios->update($comentarioDTO);
+    // $comentarioDTO->setComentario("Este es un comentario actualizado.");
+    // $comentarioDTO->setIdComentario(4);
+    // $serviceComentarios->update($comentarioDTO);
 
     //DELETE
 

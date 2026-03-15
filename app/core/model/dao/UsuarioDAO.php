@@ -159,6 +159,17 @@ final class UsuarioDAO extends BaseDAO {
 
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
 
+        if(!empty($filters["query"])){
+            $sql .= " AND (
+                nombre LIKE :query
+                OR apellido LIKE :query
+                OR correo LIKE :query
+                OR cuenta LIKE :query
+            )";
+
+            $parametros["query"] = "%" . $filters["query"] . "%";
+        }
+
         if(!empty($filters["nombre"])){
             $sql .= " AND (nombre LIKE :nombre)";
             $parametros["nombre"] = "%" . $filters["nombre"] . "%";

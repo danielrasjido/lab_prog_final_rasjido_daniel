@@ -77,7 +77,17 @@ final class ComentariosDAO extends BaseDAO{
     //CHEQUEAR MÁS ADELANTE
     public function list(array $filters): array
     {
-        throw new Exception("Method not implemented");
+        $sql = "SELECT 
+        c.*,
+        CONCAT(u.nombre, ' ', u.apellido) AS nombreUsuario,
+        p.nombre as tituloPelicula
+        FROM {$this->table} c
+        JOIN usuarios u ON c.idUsuario = u.idUsuario
+        JOIN peliculas p ON c.idPelicula = p.idPelicula
+        ";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function suggestive(array $filters): array

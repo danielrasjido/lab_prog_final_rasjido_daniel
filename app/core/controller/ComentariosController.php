@@ -19,7 +19,10 @@ final class ComentariosController extends BaseController implements InterfaceCon
     }
 
     public function index(Request $request, Response $response):void{
-        throw new \Exception("No se puede acceder a esta ruta.");
+        array_push($this->scripts, "/app/js/comentarios/index.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
 
     public function load(Request $request, Response $response):void

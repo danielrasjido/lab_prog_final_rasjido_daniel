@@ -34,16 +34,20 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     //boton buscar
 
-    const btnBuscar = document.getElementById("btnBuscar");
-    btnBuscar.addEventListener("click", () => {
-        
-        const perfil = document.getElementById("btnFiltrarPerfil").value;
-        const estado = document.getElementById("btnFiltrarEstado").value;
-        const busqueda = document.getElementById("datoBusqueda").value;
-        
-        
-        
+    const formBusqueda = document.getElementById("formBusqueda");
+    formBusqueda.addEventListener("submit", (event) => {
 
+        event.preventDefault();
+
+        const texto = formBusqueda.querySelector('input[type="search"]').value.trim();
+        
+        const filters = {};
+
+        if(texto != ""){
+            filters.query = texto;
+        }else{
+            console.log("campo de busqueda vacio, se van a listar todos los usuarios");
+        }
         
         
         userController.list(filters);
