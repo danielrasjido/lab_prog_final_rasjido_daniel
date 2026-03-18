@@ -19,7 +19,10 @@ final class EntradasController extends BaseController implements InterfaceContro
     }
 
     public function index(Request $request, Response $response):void{
-        throw new \Exception("No se ha implementado la función index en EntradasController.");
+        array_push($this->scripts, "/app/js/entradas/index.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
 
     public function load(Request $request, Response $response):void

@@ -6,7 +6,7 @@ export const comentariosController = {
         const listaComentarios = comentariosService.list(filters)
             .then(response => response.json())
             .then(data => {
-                mostrarComentarios(data.result);  // <-- Cambiar data por data.result
+                mostrarComentarios(data.result);  
             })
             .catch(error => {
                 console.error("Error al cargar los comentarios", error);

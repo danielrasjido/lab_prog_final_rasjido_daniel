@@ -108,7 +108,10 @@ final class EntradasDAO extends BaseDAO {
         $resultado = [];
         $parametros = [];
 
-        $sql = "SELECT * FROM {$this->table} WHERE 1=1";
+        $sql = "SELECT e.*, CONCAT(u.nombre, ' ', u.apellido) AS nombreUsuario
+                FROM comentarios c
+                JOIN usuarios u ON e.idUsuario = u.idUsuario 
+                WHERE 1=1";
 
         if(isset($filters["idFuncion"])){
             $sql .= " AND idFuncion = :idFuncion";
@@ -121,12 +124,12 @@ final class EntradasDAO extends BaseDAO {
         }
 
         if(!empty($filters["fechaHora"])){
-            $sql .= " AND fechaHora LIKE :fechaHora";
+            $sql .= " AND e.fechaHora LIKE :fechaHora";
             $parametros["fechaHora"] = "%" . $filters["fechaHora"] . "%";
         }
 
         if(isset($filters["anulada"])){
-            $sql .= " AND anulada = :anulada";
+            $sql .= " AND e.anulada = :anulada";
             $parametros["anulada"] = (Int)$filters["anulada"];
         }
 

@@ -21,7 +21,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Entradas</a>
+                        <a class="nav-link" href="entradas">Entradas</a>
                     </li>
 
                     <li class="nav-item">
