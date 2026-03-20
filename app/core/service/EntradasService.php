@@ -47,4 +47,13 @@ final class EntradasService implements InterfaceService{
     public function list(array $filters):array{
         return $this->dao->list($filters);
     }
+
+    public function disable(int $id):void{
+        $this->dao->disable($id);
+    }
+
+    public function enable(int $id):void{
+        $this->dao->enable($id);
+    }
+
 }

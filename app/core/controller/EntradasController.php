@@ -82,6 +82,22 @@ final class EntradasController extends BaseController implements InterfaceContro
         $response->send();
     }
 
+    public function disable(Request $request, Response $response):void
+    {
+        $id = (Int)$request->getId();
+        $this->service->disable($id);
+        $response->setMessage("<p>Entrada suspendida correctamente.</p>");
+        $response->send();
+    }
+
+    public function enable(Request $request, Response $response):void
+    {
+        $id = (Int)$request->getId();
+        $this->service->enable($id);
+        $response->setMessage("<p>Entrada habilitada correctamente.</p>");
+        $response->send();
+    }
+
 
 
 

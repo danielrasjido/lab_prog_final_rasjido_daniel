@@ -32,3 +32,24 @@
 - Archivos:
   - public/app/js/usuarios/controller.js
 - Commit: `abc1234`
+
+## 2026-03-18 - index.js:1 GET http://localhost/lab_prog_final_rasjido_daniel/public/app/js/entradas/controller net::ERR_ABORTED 404 (Not Found)
+
+- Sintoma: Index.js no se ejecutaba correctamente
+- Causa raiz: Habia olvidado escribir la extensión .js en entradasController, error tonto
+- Fix:
+  - Extensión .js al objeto entradasController importado en index.js añadida
+- Archivos:
+  - public/app/js/entradas/index.js
+- Commit: ``
+
+## 2026-03-18 - EntradasController no listaba
+
+- Sintoma: no se podia listar correctamente el modulo de entradas
+- Causa raiz: La consulta SQL de list carga la tabla incorrecta, usaba la tabla comentarois ya que habia copiado
+  y pegado del modulo anterior
+- Fix:
+  - cambiar "comentarios" por this->table
+- Archivos:
+  - EntradasDAO
+- Commit: ``

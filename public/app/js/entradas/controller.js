@@ -6,13 +6,15 @@ export const entradasController = {
         const listaEntradas = entradasService.list(filters)
             .then(response => response.json())
             .then(data => {
-                //mostrarComentarios(data.result);
+                mostrarEntradas(data.result);
                 console.log(data.result) 
             })
             .catch(error => {
                 console.error("Error al cargar las entradas", error);
             });
-    }
+    },
+    enable: id => entradasService.enable(id),
+    disable: id => entradasService.disable(id)
 }
 
 function mostrarEntradas(entradas) {
@@ -26,12 +28,15 @@ function mostrarEntradas(entradas) {
          let tr = document.createElement("tr");
 
          tr.innerHTML = `
-            <td>${e.idFuncion}</td>
+            <td>${e.idEntrada}</td>
             <td>${e.nombreUsuario}</td>
             <td>${e.fechaHora}</td>
+            <td>${e.idFuncion}</td>
+            <td>${e.fechaHoraFuncion}</td>
+            <td>${e.anulada === 0 ? "Activa" : "Cancelada"}</td>
             <td>
-                <a href="usuario/edit/${comentario.idUsuario}" class="btn btn-primary">Suspender usuario</a>
-                <button type="button" data-id-comentario=${comentario.idComentario} class="btn btn-danger btnEliminar">Eliminar comentario</button>
+                <button id="btnHabilitarEntrada" type="button" data-id-entrada=${e.idEntrada} class="btn btn-success btnHabilitar me-2" ${e.anulada === 1 ? '' : 'disabled'}>Habilitar entrada</button>
+                <button id="btnSuspenderEntrada" type="button" data-id-entrada=${e.idEntrada} class="btn btn-warning btnSuspender me-2" ${e.anulada === 0 ? '' : 'disabled'}>Suspender entrada</button>
             </td>
         `;
          //insertamos la fila a la tabla

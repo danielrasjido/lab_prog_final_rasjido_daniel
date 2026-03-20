@@ -108,9 +108,11 @@ final class EntradasDAO extends BaseDAO {
         $resultado = [];
         $parametros = [];
 
-        $sql = "SELECT e.*, CONCAT(u.nombre, ' ', u.apellido) AS nombreUsuario
-                FROM comentarios c
-                JOIN usuarios u ON e.idUsuario = u.idUsuario 
+        $sql = "SELECT e.*, CONCAT(u.nombre, ' ', u.apellido) AS nombreUsuario,
+                CONCAT(f.fecha, ' / ', f.hora) AS fechaHoraFuncion
+                FROM {$this->table} e
+                JOIN usuarios u ON e.idUsuario = u.idUsuario
+                JOIN funciones f ON e.idFuncion = f.idFuncion
                 WHERE 1=1";
 
         if(isset($filters["idFuncion"])){
@@ -175,6 +177,29 @@ final class EntradasDAO extends BaseDAO {
         return $resultado;
     }
 
+    /**
+     * Anula la entrada.
+     * 
+     */
+    public function disable(int $id):void{
+        $sql = "UPDATE {$this->table} 
+        SET  anulada = 1
+        WHERE idEntrada = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => $id]);
+    }
+
+    /**
+     * Habilita la entrada.
+     * 
+     */
+    public function enable(int $id):void{
+        $sql = "UPDATE {$this->table} 
+        SET  anulada = 0
+        WHERE idEntrada = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => $id]);
+    }
 }
 
     

@@ -16,7 +16,7 @@
 </nav>
 
 
-<table id="tablaUsuarios" class="table">
+<table id="tablaUsuarios" class="table table-striped text-center">
     <thead>
         <tr>
             <th>Usuario</th>

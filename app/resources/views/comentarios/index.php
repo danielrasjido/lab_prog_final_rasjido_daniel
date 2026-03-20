@@ -12,7 +12,7 @@
 </nav>
 
 
-<table id="tablaComentarios" class="table">
+<table id="tablaComentarios" class="table table-striped text-center">
     <thead>
         <tr>
             <th>Usuario</th>
