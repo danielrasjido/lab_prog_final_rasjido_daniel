@@ -29,7 +29,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Peliculas</a>
+                        <a class="nav-link" href="peliculas">Peliculas</a>
                     </li>
 
                     <li class="nav-item">
