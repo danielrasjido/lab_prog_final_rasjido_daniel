@@ -1,4 +1,4 @@
-<h1>ola desde el modulo de entradas uwu camila te amo <3</h1>
+<h1>ola desde el modulo de entradas u3</h1>
 
 <table id="tablaComentarios" class="table table-striped text-center">
     <thead>
