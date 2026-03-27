@@ -1,2 +1,2 @@
 <?php
-const DATABASE_DSN ="mysql:host=localhost;port=3306;dbname=lp_final;charset=UTF8";
+const DATABASE_DSN ="mysql:host=localhost;port=3307;dbname=lp_final;charset=UTF8";
