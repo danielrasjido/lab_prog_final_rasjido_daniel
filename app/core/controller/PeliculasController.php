@@ -34,7 +34,9 @@ final class PeliculasController extends BaseController implements InterfaceContr
         $response->send();
     }
     public function create(Request $request, Response $response):void{
-
+        array_push($this->scripts, "/app/js/peliculas/create.js");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
     public function save(Request $request, Response $response):void{
         $dto = new PeliculasDTO($request->getDataFromInput());

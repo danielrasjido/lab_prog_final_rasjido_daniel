@@ -53,3 +53,24 @@
 - Archivos:
   - EntradasDAO
 - Commit: ``
+
+## 2026-03-28 - No funciona list() del modulo de peliculas
+
+- Sintoma: peliculasController.list() no funciona, del método auxiliar para imprimir los datos solo se 
+ejecuta una parte, se muestran console.logs() pero el bucle que imprime los datos no funciona
+- Causa raiz: en el controller estaba listando peliculasService.list(), pero este método no devuelve un array de datos, devuelve una promesa
+- Fix:
+  - Modificar el controler para manejar la promesa
+- Archivos:
+  - public/app/js/peliculas/controller.js
+- Commit: ``
+
+## 2026-03-28 - No funciona el botón "ingresar pelicula" del modulo peliculas
+
+- Sintoma: No se puede entrar a la sección create, queda la pantalla en blanco
+- Causa raiz: habia olvidado implementar el metodo create en peliculasController
+- Fix:
+  - Modificar el controler para manejar la promesa
+- Archivos:
+  - app/core/controller/peliculasController
+- Commit: ``
