@@ -18,6 +18,7 @@ const request = async (url, options = {}) => {
         throw new Error(data.message || "Error en la API");
     }
 
+    console.log("Retornando data.result:", data.result);
     return data.result;
 }
 

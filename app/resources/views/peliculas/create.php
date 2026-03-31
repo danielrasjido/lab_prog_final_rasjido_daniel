@@ -69,8 +69,8 @@
         <div class="mb-3">
             <label for="datoDisponibilidad" class="form-label">Disponibilidad</label>
             <select class="form-control" name="datoDisponibilidad" id="datoDisponibilidad">
-                <option value="disponible">Disponible</option>
-                <option value="no_disponible">No disponible</option>
+                <option value="1">Disponible</option>
+                <option value="0">No disponible</option>
             </select>
         </div>
 

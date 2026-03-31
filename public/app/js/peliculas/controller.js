@@ -3,25 +3,110 @@ import {peliculasService} from './service.js';
 
 export const peliculasController = {
     load: (id) => {
+        peliculasService.load(id)
+            .then(response => {
+                const pelicula = response;
+            
+            if(!pelicula){
+                console.error("no existe la pelicula")
+                console.log(pelicula)
+                //añadir toast
+                return
+            }
 
+            document.getElementById("datoNombrePelicula").value = pelicula.nombre;
+            document.getElementById("datoImagenCartelera").value = pelicula.imagenCartelera;
+            document.getElementById("datoActores").value = pelicula.actores;
+            document.getElementById("datoSinopsis").value = pelicula.sinopsis;
+            document.getElementById("datoDuracion").value = pelicula.duracion;
+            document.getElementById("datoGenero").value = pelicula.genero;
+            document.getElementById("datoIdiomas").value = pelicula.idiomas;
+            document.getElementById("datoPais").value = pelicula.pais;
+            document.getElementById("datoCalificacion").value = pelicula.calificacion;
+            document.getElementById("datoTituloOriginal").value = pelicula.tituloOriginal;
+            document.getElementById("datoSitioWeb").value = pelicula.sitioWeb;
+            document.getElementById("datoFechaEstreno").value = pelicula.fechaEstreno;
+            document.getElementById("datoFechaIngreso").value = pelicula.fechaIngreso;
+            document.getElementById("datoDisponibilidad").value = pelicula.disponibilidad;
+            })
+             .catch(error => {
+            console.error("Error al cargar película:", error.message);
+        });
     },
     save: () => {
-        const pelicula = capturarDatosPeliculaSave();
+        const pelicula = capturarDatosPelicula();
         if(!pelicula){
             console.error("no se pudo capturar la pelicula");
         }
         peliculasService.save(pelicula).then(response => {
-            if(response.success){
-                console.log("pelicula guardada con exito");
+            if(response.error){
+                console.error("no se pudo guardar la pelicula" + error);
                 //añadir toast mas adelante
             } else {
-                console.error("no se pudo guardar la pelicula");
+                console.log("pelicula guardada con exito");
+                //añadir toast mas adelante
+            }
+        })
+    },
+    update: () => {
+        const pelicula = capturarDatosPelicula();
+        if(!pelicula){
+            console.error("no se pudo capturar la pelicula");
+        }
+        peliculasService.update(pelicula).then(response => {
+            if(response.error){
+                console.error("no se pudo actualizar la pelicula" + error);
+                //añadir toast mas adelante
+            } else {
+                console.log("pelicula actualizada con exito");
+                //añadir toast mas adelante
+            }
+        })
+    },
+    delete: (id) => {
+        if (!confirm("¿Está seguro que desea eliminar esta película? Esta acción no se puede deshacer.")) {
+            return;
+        }
+        peliculasService.delete(id).then(response => {
+            if(response.error){
+                console.error("no se pudo eliminar la pelicula" + error);
+                //añadir toast mas adelante
+            } else {
+                console.log("pelicula eliminada con exito");
                 //añadir toast mas adelante
             }
         })
     },
     list: (filters) => {
         peliculasService.list(filters).then(peliculas => mostrarPeliculas(peliculas))
+    },
+    enableForm: () => {
+        let listaBotones = document.querySelectorAll('.control');
+        let botonActualizar = document.getElementById("btnActualizar");
+        let botonCancelarEdicion = document.getElementById("btnCancelarEdicion");
+
+
+
+        if (estado) {
+            botonActualizar.disabled = false;
+            botonCancelarEdicion.disabled = false;
+            listaBotones.forEach(boton => {
+                boton.disabled = false;
+            });
+        } else {
+            botonActualizar.disabled = true;
+            botonCancelarEdicion.disabled = true;
+            listaBotones.forEach(boton => {
+                boton.disabled = true;
+            });
+        }
+    },
+    resetForm: () => {
+        const url = window.location.pathname.split('/'); //devuelve la url divida en arraay
+        
+        const idFinal = url[url.length - 1]; //devuelve la ultima parte de la url, que es el id
+        peliculasController.load(parseInt(idFinal));
+        peliculasController.enableForm(false);
     }
 }
 
@@ -64,25 +149,30 @@ function mostrarPeliculas(peliculas){
         tabla.appendChild(tr);
     }
 
-    function capturarDatosPeliculaSave(){
+    
 
-        dtNombrePelicula = document.getElementById("datoNombrePelicula").value.trim();
-        dtImagenCartelera = document.getElementById("datoImagenCartelera").value.trim();
-        dtActores = document.getElementById("datoActores").value.trim();
-        dtSinopsis = document.getElementById("datoSinopsis").value.trim();
-        dtDuracion = document.getElementById("datoDuracion").value.trim();
-        dtGenero = document.getElementById("datoGenero").value.trim();
-        dtIdiomas = document.getElementById("datoIdiomas").value.trim();
-        dtPais = document.getElementById("datoPais").value.trim();
-        dtCalificacion = document.getElementById("datoCalificacion").value.trim();
-        dtTituloOriginal = document.getElementById("datoTituloOriginal").value.trim();
-        dtSitioWeb = document.getElementById("datoSitioWeb").value.trim();
-        dtFechaEstreno = document.getElementById("datoFechaEstreno").value.trim();
-        dtFechaIngreso = document.getElementById("datoFechaIngreso").value.trim();
-        dtDisponibilidad = document.getElementById("datoDisponibilidad").value.trim();
+
+}
+
+function capturarDatosPelicula(){
+
+        const dtNombrePelicula = document.getElementById("datoNombrePelicula").value.trim();
+        const dtImagenCartelera = document.getElementById("datoImagenCartelera").value.trim();
+        const dtActores = document.getElementById("datoActores").value.trim();
+        const dtSinopsis = document.getElementById("datoSinopsis").value.trim();
+        const dtDuracion = document.getElementById("datoDuracion").value.trim();
+        const dtGenero = document.getElementById("datoGenero").value.trim();
+        const dtIdiomas = document.getElementById("datoIdiomas").value.trim();
+        const dtPais = document.getElementById("datoPais").value.trim();
+        const dtCalificacion = document.getElementById("datoCalificacion").value.trim();
+        const dtTituloOriginal = document.getElementById("datoTituloOriginal").value.trim();
+        const dtSitioWeb = document.getElementById("datoSitioWeb").value.trim();
+        const dtFechaEstreno = document.getElementById("datoFechaEstreno").value.trim();
+        const dtFechaIngreso = document.getElementById("datoFechaIngreso").value.trim();
+        const dtDisponibilidad = parseInt(document.getElementById("datoDisponibilidad").value);
 
         let pelicula = {
-            nombrePelicula: dtNombrePelicula,
+            nombre: dtNombrePelicula,
             imagenCartelera: dtImagenCartelera,
             actores: dtActores,
             sinopsis: dtSinopsis,
@@ -101,9 +191,6 @@ function mostrarPeliculas(peliculas){
         return pelicula;
 
     }
-
-
-}
 
 /**
  

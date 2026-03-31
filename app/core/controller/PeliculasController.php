@@ -46,7 +46,9 @@ final class PeliculasController extends BaseController implements InterfaceContr
         $response->send();
     }
     public function edit(Request $request, Response $response):void{
-
+        array_push($this->scripts, "/app/js/peliculas/edit.js");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
     public function update(Request $request, Response $response):void{
         $dto = new PeliculasDTO($request->getDataFromInput());

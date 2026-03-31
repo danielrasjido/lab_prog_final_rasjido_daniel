@@ -74,3 +74,13 @@ ejecuta una parte, se muestran console.logs() pero el bucle que imprime los dato
 - Archivos:
   - app/core/controller/peliculasController
 - Commit: ``
+
+## 2026-03-30 - No funciona el load del modulo peliculas
+
+- Sintoma: Load returna undefined a pesar de que la petición se ejecute correctamente
+- Causa raiz: en load estaba guardando la pelicula con response.result cuando el objeto request ya retorna el result directamente
+- Fix:
+  - guardar la pelicula como response
+- Archivos:
+  - public/app/js/peliculas/controller.js
+- Commit: ``
