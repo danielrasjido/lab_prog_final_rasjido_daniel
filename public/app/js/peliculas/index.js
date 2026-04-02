@@ -14,4 +14,24 @@ document.addEventListener("DOMContentLoaded", event => {
             .catch(err => console.error(err));;
         }
     });
+
+    //boton buscar
+    const formBusqueda = document.getElementById("formBusqueda");
+        formBusqueda.addEventListener("submit", (event) => {
+    
+            event.preventDefault();
+    
+            const texto = formBusqueda.querySelector('input[type="search"]').value.trim();
+            
+            const filters = {};
+    
+            if(texto != ""){
+                filters.query = texto;
+            }else{
+                console.log("campo de busqueda vacio, se van a listar todos los usuarios");
+            }
+            
+            
+            peliculasController.list(filters);
+    })
 })

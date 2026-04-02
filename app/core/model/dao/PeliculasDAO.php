@@ -138,6 +138,19 @@ final class PeliculasDAO extends BaseDAO{
 
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
 
+        if(!empty($filters["query"])){
+            $sql .= " AND (
+                nombre LIKE :query
+                OR tituloOriginal LIKE :query
+                OR actores LIKE :query
+                OR genero LIKE :query
+                OR pais LIKE :query
+                OR idiomas LIKE :query
+            )";
+
+            $parametros["query"] = "%" . $filters["query"] . "%";
+        }
+
         if(!empty($filters["nombre"])){
             $sql .= " AND nombre = :nombre";
             $parametros["nombre"] = $filters["nombre"];
