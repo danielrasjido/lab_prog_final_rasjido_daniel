@@ -49,7 +49,7 @@ export const peliculasController = {
         })
     },
     update: () => {
-        const pelicula = capturarDatosPelicula();
+        const pelicula = capturarDatosPeliculaUpdate();
         if(!pelicula){
             console.error("no se pudo capturar la pelicula");
         }
@@ -59,6 +59,7 @@ export const peliculasController = {
                 //añadir toast mas adelante
             } else {
                 console.log("pelicula actualizada con exito");
+                this.enableForm(false)
                 //añadir toast mas adelante
             }
         })
@@ -67,7 +68,8 @@ export const peliculasController = {
         if (!confirm("¿Está seguro que desea eliminar esta película? Esta acción no se puede deshacer.")) {
             return;
         }
-        peliculasService.delete(id).then(response => {
+        return peliculasService.delete(id)
+        .then(response => {
             if(response.error){
                 console.error("no se pudo eliminar la pelicula" + error);
                 //añadir toast mas adelante
@@ -80,11 +82,13 @@ export const peliculasController = {
     list: (filters) => {
         peliculasService.list(filters).then(peliculas => mostrarPeliculas(peliculas))
     },
-    enableForm: () => {
-        let listaBotones = document.querySelectorAll('.control');
+    enableForm: (estado) => {
+        let listaBotones = document.querySelectorAll('.form-control');
         let botonActualizar = document.getElementById("btnActualizar");
         let botonCancelarEdicion = document.getElementById("btnCancelarEdicion");
 
+
+        console.log("lista de botones: ", listaBotones, listaBotones.length);
 
 
         if (estado) {
@@ -142,7 +146,7 @@ function mostrarPeliculas(peliculas){
             <td>${p.disponibilidad}</td>
             <td>
                 <a href="peliculas/edit/${p.idPelicula}" class="btn btn-primary">Modificar</a>
-                <button type="button" data-id-usuario=${p.idPelicula} class="btn btn-danger btnEliminar">Eliminar</button>
+                <button type="button" data-id-pelicula=${p.idPelicula} class="btn btn-danger btnEliminar">Eliminar</button>
             </td>
         `;
         //insertamos la fila a la tabla
@@ -172,6 +176,53 @@ function capturarDatosPelicula(){
         const dtDisponibilidad = parseInt(document.getElementById("datoDisponibilidad").value);
 
         let pelicula = {
+            nombre: dtNombrePelicula,
+            imagenCartelera: dtImagenCartelera,
+            actores: dtActores,
+            sinopsis: dtSinopsis,
+            duracion: dtDuracion,
+            genero: dtGenero,
+            idiomas: dtIdiomas,
+            pais: dtPais,
+            calificacion: dtCalificacion,
+            tituloOriginal: dtTituloOriginal,
+            sitioWeb: dtSitioWeb,
+            fechaEstreno: dtFechaEstreno,
+            fechaIngreso: dtFechaIngreso,
+            disponibilidad: dtDisponibilidad
+        }
+
+        return pelicula;
+
+    }
+
+    /**
+     * Lo mismo que capturarDatosPelicula pero acá captura tambien el id
+     * @returns 
+     */
+    function capturarDatosPeliculaUpdate(){
+
+        const urlId = window.location.pathname.split('/')
+        const id = urlId[urlId.length - 1];
+
+        const idPelicula = parseInt(id);
+        const dtNombrePelicula = document.getElementById("datoNombrePelicula").value.trim();
+        const dtImagenCartelera = document.getElementById("datoImagenCartelera").value.trim();
+        const dtActores = document.getElementById("datoActores").value.trim();
+        const dtSinopsis = document.getElementById("datoSinopsis").value.trim();
+        const dtDuracion = document.getElementById("datoDuracion").value.trim();
+        const dtGenero = document.getElementById("datoGenero").value.trim();
+        const dtIdiomas = document.getElementById("datoIdiomas").value.trim();
+        const dtPais = document.getElementById("datoPais").value.trim();
+        const dtCalificacion = document.getElementById("datoCalificacion").value.trim();
+        const dtTituloOriginal = document.getElementById("datoTituloOriginal").value.trim();
+        const dtSitioWeb = document.getElementById("datoSitioWeb").value.trim();
+        const dtFechaEstreno = document.getElementById("datoFechaEstreno").value.trim();
+        const dtFechaIngreso = document.getElementById("datoFechaIngreso").value.trim();
+        const dtDisponibilidad = parseInt(document.getElementById("datoDisponibilidad").value);
+
+        let pelicula = {
+            idPelicula: idPelicula,
             nombre: dtNombrePelicula,
             imagenCartelera: dtImagenCartelera,
             actores: dtActores,

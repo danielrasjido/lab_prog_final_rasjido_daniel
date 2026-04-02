@@ -84,3 +84,13 @@ ejecuta una parte, se muestran console.logs() pero el bucle que imprime los dato
 - Archivos:
   - public/app/js/peliculas/controller.js
 - Commit: ``
+
+## 2026-04-01 - Update no actualiza la pelicula
+
+- Sintoma: La petición update se ejecuta correctamente al modificar los datos de una pelicula pero los datos no se ven reflejados en la bd
+- Causa raiz: no guardaba el id de la pelicula al capturar los datos
+- Fix:
+  - guardar el id proveniente de la url
+- Archivos:
+  - public/app/js/peliculas/controller.js
+- Commit: ``
