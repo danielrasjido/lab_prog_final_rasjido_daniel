@@ -20,7 +20,10 @@ final class ProgramacionController extends BaseController implements InterfaceCo
     }
 
     public function index(Request $request, Response $response):void{
-        throw new \Exception("Función no implementada.");
+        array_push($this->scripts, "/app/js/programacion/index.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
 
     public function load(Request $request, Response $response):void

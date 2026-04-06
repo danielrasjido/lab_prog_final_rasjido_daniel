@@ -33,7 +33,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Programacion</a>
+                        <a class="nav-link" href="programacion">Programacion</a>
                     </li>
 
                     <li class="nav-item">
