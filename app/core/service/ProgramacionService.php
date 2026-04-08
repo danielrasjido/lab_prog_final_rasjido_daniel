@@ -13,6 +13,10 @@ use Exception;
 
 final class ProgramacionService implements InterfaceService{
 
+    public const ESTADO_CANCELADA = 1;
+    public const ESTADO_VIGENTE = 2;
+    public const ESTADO_PROGRAMADA = 3;
+
     private ProgramacionDAO $dao;
 
     public function __construct()
@@ -32,11 +36,21 @@ final class ProgramacionService implements InterfaceService{
     }
 
     public function save(InterfaceDto $dto):void{
-        $this->dao->save($dto->toArray());
+        $data = $dto->toArray();
+        $data['idEstadoProgramacion'] = $this->normalizarEstadoProgramacion(
+            $data['idEstadoProgramacion'] ?? self::ESTADO_PROGRAMADA
+        );
+
+        $this->dao->save($data);
     }
 
     public function update(InterfaceDto $dto):void{
-        $this->dao->update($dto->toArray());
+        $data = $dto->toArray();
+        $data['idEstadoProgramacion'] = $this->normalizarEstadoProgramacion(
+            $data['idEstadoProgramacion'] ?? self::ESTADO_PROGRAMADA
+        );
+
+        $this->dao->update($data);
     }
 
     public function delete(InterfaceDto $dto):void{
@@ -47,5 +61,20 @@ final class ProgramacionService implements InterfaceService{
     
     public function list(array $filters):array{
         return $this->dao->list($filters);
+    }
+
+    private function normalizarEstadoProgramacion(int $idEstadoProgramacion): int
+    {
+        $estadosValidos = [
+            self::ESTADO_CANCELADA,
+            self::ESTADO_VIGENTE,
+            self::ESTADO_PROGRAMADA
+        ];
+
+        if (!in_array($idEstadoProgramacion, $estadosValidos, true)) {
+            return self::ESTADO_PROGRAMADA;
+        }
+
+        return $idEstadoProgramacion;
     }
 }

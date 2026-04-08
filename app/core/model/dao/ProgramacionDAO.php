@@ -35,14 +35,17 @@ final class ProgramacionDAO extends BaseDAO {
 	{
 		$sql = "INSERT INTO {$this->table}
 		(fechaInicio,
-		fechaFin) VALUES (
+		fechaFin,
+		idEstadoProgramacion) VALUES (
 		:fechaInicio,
-		:fechaFin)";
+		:fechaFin,
+		:idEstadoProgramacion)";
 
 		$stmt = $this->connection->prepare($sql);
 		$stmt->execute([
 			"fechaInicio" => $data["fechaInicio"],
-			"fechaFin" => $data["fechaFin"]
+			"fechaFin" => $data["fechaFin"],
+			"idEstadoProgramacion" => (int)($data["idEstadoProgramacion"] ?? 3)
 		]);
 	}
 
@@ -50,13 +53,15 @@ final class ProgramacionDAO extends BaseDAO {
 	{
 		$sql = "UPDATE {$this->table} SET
 		fechaInicio = :fechaInicio,
-		fechaFin = :fechaFin
+		fechaFin = :fechaFin,
+		idEstadoProgramacion = :idEstadoProgramacion
 		WHERE idProgramacion = :idProgramacion";
 
 		$stmt = $this->connection->prepare($sql);
 		$stmt->execute([
 			"fechaInicio" => $data["fechaInicio"],
 			"fechaFin" => $data["fechaFin"],
+			"idEstadoProgramacion" => (int)($data["idEstadoProgramacion"] ?? 3),
 			"idProgramacion" => $data["idProgramacion"]
 		]);
 	}
@@ -88,6 +93,11 @@ final class ProgramacionDAO extends BaseDAO {
 		if(!empty($filters["fechaFin"])){
 			$sql .= " AND fechaFin <= :fechaFin";
 			$parametros["fechaFin"] = $filters["fechaFin"];
+		}
+
+		if(isset($filters["idEstadoProgramacion"])){
+			$sql .= " AND idEstadoProgramacion = :idEstadoProgramacion";
+			$parametros["idEstadoProgramacion"] = (int)$filters["idEstadoProgramacion"];
 		}
 
 		$stmt = $this->connection->prepare($sql);

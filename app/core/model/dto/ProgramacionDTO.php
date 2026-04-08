@@ -7,6 +7,7 @@ use DateTime;
 final class ProgramacionDTO implements InterfaceDto{
     
     private $idProgramacion;
+    private int $idEstadoProgramacion;
     private DateTime $fechaInicio, $fechaFin;
     
     public function __construct(array $data = []){
@@ -14,6 +15,7 @@ final class ProgramacionDTO implements InterfaceDto{
             $this->setIdProgramacion($data['idProgramacion'] ?? 0);
             $this->setFechaInicio(new DateTime($data['fechaInicio'] ?? 'now'));
             $this->setFechaFin(new DateTime($data['fechaFin'] ?? 'now'));
+            $this->setIdEstadoProgramacion((int)($data['idEstadoProgramacion'] ?? 3));
         }
     }
 
@@ -34,6 +36,11 @@ final class ProgramacionDTO implements InterfaceDto{
         return $this->fechaFin;
     }
 
+    public function getIdEstadoProgramacion(): int
+    {
+        return $this->idEstadoProgramacion;
+    }
+
     //setters
     public function setIdProgramacion(int $idProgramacion): void{
         $this->idProgramacion = $idProgramacion;
@@ -49,6 +56,11 @@ final class ProgramacionDTO implements InterfaceDto{
         $this->fechaFin = $fechaFin;
     }
 
+    public function setIdEstadoProgramacion(int $idEstadoProgramacion): void
+    {
+        $this->idEstadoProgramacion = $idEstadoProgramacion;
+    }
+
 
     //serializacion
 
@@ -57,7 +69,8 @@ final class ProgramacionDTO implements InterfaceDto{
         return [
             'idProgramacion' => $this->getIdProgramacion(),
             'fechaInicio' => $this->getFechaInicio()->format('Y-m-d H:i:s'),
-            'fechaFin' => $this->getFechaFin()->format('Y-m-d H:i:s')
+            'fechaFin' => $this->getFechaFin()->format('Y-m-d H:i:s'),
+            'idEstadoProgramacion' => $this->getIdEstadoProgramacion()
         ];
     }
 
