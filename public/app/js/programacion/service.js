@@ -13,13 +13,19 @@ const request = async (url, options = {}) => {
     const data = await response.json();
 
     if (data.error) {
-        throw new Error(data.message || "Error en la API");
+        throw new Error(data.error || data.message || "Error en la API");
     }
 
     return data.result;
 }
 
 export const programacionService = {
+    save: (programacion) => {
+        return request("programacion/save", {
+            method: "POST",
+            body: JSON.stringify(programacion)
+        });
+    },
     list: (filters) => {
         return request("programacion/list", {
             method: "POST",
