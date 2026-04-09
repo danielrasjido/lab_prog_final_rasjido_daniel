@@ -51,6 +51,8 @@ final class ProgramacionService implements InterfaceService
             (int)$data['idEstadoProgramacion']
         );
 
+        $this->validarProgramacionExistente(new ProgramacionDTO($data));
+
         $this->dao->save($data);
     }
 
@@ -137,5 +139,21 @@ final class ProgramacionService implements InterfaceService
         if ($fin->format('Y-m-d') !== $finEsperado->format('Y-m-d')) {
             throw new \Exception("La fecha de fin debe ser exactamente 6 días después de la fecha de inicio.");
         }
+    }
+
+    public function validarProgramacionExistente(ProgramacionDTO $dto): void
+    {
+        $data = $dto->toArray();
+        $fechaInicio = new \DateTime($data['fechaInicio']);
+
+        $filtros = [
+            'fechaInicio' => $fechaInicio->format('Y-m-d')
+        ];
+
+        $programacionesExistentes = $this->dao->list($filtros);
+        if (count($programacionesExistentes) > 0) {
+            throw new \Exception("Ya existe una programación que inicia el " . $fechaInicio->format('Y-m-d') . ".");
+        }
+
     }
 }
