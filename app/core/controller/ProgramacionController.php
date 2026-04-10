@@ -86,4 +86,21 @@ final class ProgramacionController extends BaseController implements InterfaceCo
         $response->setResult($resultados);
         $response->send();
     }
+
+    public function cancelar(Request $request, Response $response): void
+    {
+        $idProgramacion = (int)($request->getId() ?? 0);
+
+        if ($idProgramacion <= 0) {
+            throw new \Exception("Debe enviar un id válido para cancelar una programación.");
+        }
+
+        try {
+            $this->service->cancelarProgramacion($idProgramacion);
+            $response->setMessage("<p>Se canceló la programación correspondiente.</p>");
+            $response->send();
+        } catch (\Exception $e) {
+            $response->setError("Error al cancelar la programación: " . $e->getMessage());
+            $response->send(); }
+    }
 }

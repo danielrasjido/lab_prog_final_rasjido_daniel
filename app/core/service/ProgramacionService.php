@@ -156,4 +156,11 @@ final class ProgramacionService implements InterfaceService
         }
 
     }
+
+
+    public function cancelarProgramacion(int $idProgramacion): void
+    {
+        $this->dao->cancelarProgramacion($idProgramacion);
+    }
+
 }

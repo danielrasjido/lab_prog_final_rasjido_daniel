@@ -31,5 +31,10 @@ export const programacionService = {
             method: "POST",
             body: JSON.stringify(filters)
         });
+    },
+    cancelar: (idProgramacion) => {
+        return request(`programacion/cancelar/${idProgramacion}`, {
+            method: "GET"
+        });
     }
 }

@@ -25,7 +25,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Funciones</a>
+                        <a class="nav-link" href="funciones">Funciones</a>
                     </li>
 
                     <li class="nav-item">

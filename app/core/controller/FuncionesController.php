@@ -19,7 +19,10 @@ final class FuncionesController extends BaseController implements InterfaceContr
     }
 
     public function index(Request $request, Response $response):void{
-        throw new \Exception("Función no implementada.");
+        array_push($this->scripts, "/app/js/funciones/index.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
 
     public function load(Request $request, Response $response):void

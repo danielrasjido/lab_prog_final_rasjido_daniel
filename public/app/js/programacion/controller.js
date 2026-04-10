@@ -84,8 +84,8 @@ function mostrarProgramaciones(programaciones) {
             <td>${p.fechaFin}</td>
             <td>${estados[p.idEstadoProgramacion] ?? "Sin estado"}</td>
             <td>
-                <a href="programacion/edit/${p.idProgramacion}" class="btn btn-primary">Modificar</a>
-                <button type="button" data-id-pelicula=${p.idProgramacion} class="btn btn-danger btnEliminar">Eliminar</button>
+                <button class="btn btn-primary" ${p.idEstadoProgramacion === 1 ? 'Disabled' : ''}>Modificar</button>
+                <button type="button" data-id-pelicula=${p.idProgramacion} class="btn btn-warning btnEliminar" ${p.idEstadoProgramacion === 1 ? 'Disabled' : ''}>Cancelar</button>
             </td>
         `;
         tabla.appendChild(tr);

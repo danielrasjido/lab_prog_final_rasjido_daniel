@@ -112,5 +112,15 @@ final class ProgramacionDAO extends BaseDAO {
 		throw new \Exception('Not implemented');
 	}
 
+	public function cancelarProgramacion(int $idProgramacion): void
+	{
+		$sql = "UPDATE {$this->table} SET idEstadoProgramacion = :idEstadoProgramacion WHERE idProgramacion = :idProgramacion";
+		$stmt = $this->connection->prepare($sql);
+		$stmt->execute([
+			"idEstadoProgramacion" => 1, // Estado "Cancelada"
+			"idProgramacion" => $idProgramacion
+		]);
+	}
+
 }
 
