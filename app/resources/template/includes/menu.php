@@ -37,7 +37,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Salas</a>
+                        <a class="nav-link" href="salas">Salas</a>
                     </li>
 
                 </ul>

@@ -47,4 +47,23 @@ final class SalasService implements InterfaceService{
     public function list(array $filters):array{
         return $this->dao->list($filters);
     }
+
+
+    public function enable(InterfaceDto $dto): void
+    {
+        $data = $dto->toArray();
+        $id = $data['idSala'];
+        $this->dao->enable($id);
+    }
+
+    public function disable(InterfaceDto $dto): void
+    {
+        $data = $dto->toArray();
+        $id = $data['idSala'];
+        $this->dao->disable($id);
+    }
+
+
 }   
+
+

@@ -20,7 +20,10 @@ final class SalasController extends BaseController implements InterfaceControlle
     }
 
     public function index(Request $request, Response $response):void{
-        throw new \Exception("Método no implementado todavia");
+        array_push($this->scripts, "/app/js/salas/index.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
 
     public function load(Request $request, Response $response):void
@@ -83,4 +86,22 @@ final class SalasController extends BaseController implements InterfaceControlle
     }
 
     
+    public function enable(Request $request, Response $response): void
+    {
+        $dto = $this->service->load((Int)$request->getId());
+        $this->service->enable($dto);
+
+        $response->setMessage("<p>Se habilitó la sala correspondiente.</p>");
+        $response->send();
+    }
+
+    public function disable(Request $request, Response $response): void
+    {
+        $dto = $this->service->load((Int)$request->getId());
+        $this->service->disable($dto);
+
+        $response->setMessage("<p>Se deshabilitó la sala correspondiente.</p>");
+        $response->send();
+    }
+
 }

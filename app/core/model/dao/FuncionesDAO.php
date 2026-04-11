@@ -7,7 +7,8 @@ use app\core\model\dao\base\InterfaceDAO;
 use Exception;
 use PDO;
 
-final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
+final class FuncionesDAO extends BaseDAO implements InterfaceDAO
+{
 
     public function __construct(?PDO $connection)
     {
@@ -18,7 +19,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
      * Carga una función de la base de datos.
      * @param id Id de la función que se quiere mostrar.
      */
-    public function load(int $id):array|false
+    public function load(int $id): array|false
     {
 
         $arreglo = [];
@@ -36,7 +37,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
      * Crea una función nueva.
      * @param data Array con todos los campos de la tabla de funciones. 
      */
-    public function save(array $data):void
+    public function save(array $data): void
     {
         //Insertar la función nueva en la db, de idFuncion se hace cargo sql
         $sql = "INSERT INTO {$this->table} (
@@ -65,11 +66,11 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
         ]);
     }
 
-        /**
-        * Edita una función existente.
-        * @param data Array con todos los campos de la tabla de funciones. 
-        */
-    public function update(array $data):void
+    /**
+     * Edita una función existente.
+     * @param data Array con todos los campos de la tabla de funciones. 
+     */
+    public function update(array $data): void
     {
         $sql = "UPDATE {$this->table} SET
             idPelicula = :idPelicula,
@@ -95,11 +96,11 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
      * Elimina una función de la base de datos.
      * @param id Id de la función que se quiere eliminar.
      */
-    public function delete(int $id):void
+    public function delete(int $id): void
     {
         $sql = "DELETE FROM {$this->table} WHERE idFuncion = :id";
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute(["id" => (Int)$id]);
+        $stmt->execute(["id" => (int)$id]);
     }
 
     /**
@@ -108,9 +109,19 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
      *  
      * Si el array de filtros está vacío, se listan todas las funciones. Si no, se listan las funciones que cumplen con los filtros.
      */
-    public function list(array $filters = []):array
+    public function list(array $filters = []): array
     {
-        $sql = "SELECT * FROM {$this->table}";
+        $sql = "SELECT
+            f.idFuncion,
+            f.idPelicula,
+            f.idProgramacion,
+            f.idSala,
+            f.precio,
+            f.fecha,
+            f.hora,
+            p.nombre AS nombrePelicula
+        FROM {$this->table} f
+        INNER JOIN peliculas p ON p.idPelicula = f.idPelicula";
         $conditions = [];
         $params = [];
 
@@ -133,6 +144,4 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO {
     {
         throw new \Exception('Not implemented');
     }
-
-
 }

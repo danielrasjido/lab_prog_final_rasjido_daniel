@@ -129,4 +129,18 @@ final class SalasDAO extends BaseDAO {
         throw new \Exception('Not implemented');
     }
 
+
+    public function enable(int $id): void
+    {
+        $sql = "UPDATE {$this->table} SET estado = 1 WHERE idSala = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => $id]);
+    }
+
+    public function disable(int $id): void
+    {
+        $sql = "UPDATE {$this->table} SET estado = 0 WHERE idSala = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => $id]);
+    }
 }

@@ -6,6 +6,7 @@ use app\core\model\dao\base\InterfaceDAO;
 use app\core\model\dao\FuncionesDAO;
 use app\core\model\dto\FuncionesDTO;
 use app\core\model\dto\base\InterfaceDto;
+use app\core\model\dto\SalasDTO;
 use app\core\service\base\InterfaceService;
 use app\libs\database\Connection;
 use Exception;
@@ -46,4 +47,15 @@ final class FuncionesService implements InterfaceService{
     public function list(array $filters):array{
         return $this->dao->list($filters);
     }
+
+    //validamos que la sala seleccionada tenga estado = 1
+    public function validarSalaHabilitada(int $idSala): void{
+        $salaService = new SalasService();
+        $salaDTO = $salaService->load($idSala);
+        if($salaDTO->getEstado() != 1){
+            throw new \Exception("La sala seleccionada no está habilitada.");
+        }
+    }
+
+
 }

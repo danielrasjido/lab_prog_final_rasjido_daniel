@@ -32,7 +32,7 @@ function mostrarFunciones(funciones){
         tr.innerHTML = `
             <td>${f.idFuncion}</td>
             <td>${f.idProgramacion}</td>
-            <td>${f.idPelicula}</td>
+            <td>${f.nombrePelicula}</td>
             <td>${f.idSala}</td>
             <td>${f.precio}</td>
             <td>${f.fecha}</td>

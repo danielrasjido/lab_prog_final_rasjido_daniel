@@ -13,29 +13,32 @@ const request = async (url, options = {}) => {
     const data = await response.json();
 
     if (data.error) {
-        throw new Error(data.message || "Error en la API");
+        throw new Error(data.error || data.message || "Error en la API");
     }
 
-    console.log("Retornando data.result:", data.result);
     return data.result;
 }
 
-
-export const funcionesService = {
-    list: (filters = {}) => {
-        return request("funciones/list", {
+export const salasService = {
+    list: (filters) => {
+        return request("salas/list", {
             method: "POST",
             body: JSON.stringify(filters)
         });
     },
-    save: (funcion) => {
-        return request("funciones/save", {
+    save: (sala) => {
+        return request("salas/save", {
             method: "POST",
-            body: JSON.stringify(funcion)
+            body: JSON.stringify(sala)
         });
     },
-    cancelar: (idFuncion) => {
-        return request(`funciones/cancelar/${idFuncion}`, {
+    enable: (idSala) => {
+        return request(`salas/enable/${idSala}`, {
+            method: "GET"
+        });
+    },
+    disable: (idSala) => {
+        return request(`salas/disable/${idSala}`, {
             method: "GET"
         });
     }
