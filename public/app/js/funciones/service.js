@@ -28,6 +28,18 @@ export const funcionesService = {
             body: JSON.stringify(filters)
         });
     },
+    listPeliculas: (filters = {}) => {
+        return request("peliculas/list", {
+            method: "POST",
+            body: JSON.stringify(filters)
+        });
+    },
+    listSalas: (filters = {}) => {
+        return request("salas/list", {
+            method: "POST",
+            body: JSON.stringify(filters)
+        });
+    },
     save: (funcion) => {
         return request("funciones/save", {
             method: "POST",

@@ -19,7 +19,7 @@ final class SalasService implements InterfaceService{
         $this->dao = new SalasDAO(Connection::get());
     }
 
-    public function load(int $id):InterfaceDto{
+    public function load(int $id):SalasDTO{
 
         $data = $this->dao->load($id);
 
