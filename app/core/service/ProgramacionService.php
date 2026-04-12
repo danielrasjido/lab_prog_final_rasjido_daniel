@@ -26,7 +26,7 @@ final class ProgramacionService implements InterfaceService
         $this->dao = new ProgramacionDAO(Connection::get());
     }
 
-    public function load(int $id): InterfaceDto
+    public function load(int $id): ProgramacionDTO
     {
 
         $data = $this->dao->load($id);

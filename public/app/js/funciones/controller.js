@@ -109,20 +109,18 @@ function cargarSelectSalas(salas) {
 
 function capturarDatosFuncion() {
 
-    const dtIdProgramacion = document.getElementById("datoIdProgramacion")?.value.trim();
     const dtIdPelicula = document.getElementById("datoIdPelicula")?.value.trim();
     const dtIdSala = document.getElementById("datoIdSala")?.value.trim();
     const dtPrecio = document.getElementById("datoPrecio")?.value.trim();
     const dtFecha = document.getElementById("datoFecha")?.value.trim();
     const dtHora = document.getElementById("datoHora")?.value.trim();
 
-    if (!dtIdProgramacion || !dtIdPelicula || !dtIdSala || !dtPrecio || !dtFecha || !dtHora) {
+    if (!dtIdPelicula || !dtIdSala || !dtPrecio || !dtFecha || !dtHora) {
         alert("Todos los campos son obligatorios.");
         return null;
     }
 
     let funcion = {
-        idProgramacion: Number(dtIdProgramacion),
         idPelicula: Number(dtIdPelicula),
         idSala: Number(dtIdSala),
         precio: Number(dtPrecio),
