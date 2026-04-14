@@ -62,6 +62,15 @@ export const programacionController = {
             console.error("Error al listar programaciones:", error);
         }
     },
+    cancelar: async (idProgramacion) => {
+        try {
+            await programacionService.cancelar(idProgramacion);
+            await programacionController.list({});
+        } catch (error) {
+            console.error("Error al cancelar programación:", error);
+            alert(error.message || "No se pudo cancelar la programación.");
+        }
+    },
 }
 
 function mostrarProgramaciones(programaciones) {
@@ -85,7 +94,7 @@ function mostrarProgramaciones(programaciones) {
             <td>${estados[p.idEstadoProgramacion] ?? "Sin estado"}</td>
             <td>
                 <button class="btn btn-primary" ${p.idEstadoProgramacion === 1 ? 'Disabled' : ''}>Modificar</button>
-                <button type="button" data-id-pelicula=${p.idProgramacion} class="btn btn-warning btnEliminar" ${p.idEstadoProgramacion === 1 ? 'Disabled' : ''}>Cancelar</button>
+                <button type="button" data-id-programacion=${p.idProgramacion} class="btn btn-warning btnCancelarProgramacion" ${p.idEstadoProgramacion === 1 ? 'Disabled' : ''}>Cancelar</button>
             </td>
         `;
         tabla.appendChild(tr);

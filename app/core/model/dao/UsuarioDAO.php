@@ -212,8 +212,8 @@ final class UsuarioDAO extends BaseDAO {
 
         if(!empty($filters['query'])){
             $sql .= " AND (
-                nombre LIKE :q,
-                OR apellido LIKE :q,
+                nombre LIKE :q
+                OR apellido LIKE :q
             )";
 
             $parametros['q'] = '%' . $filters['query'] . '%';
@@ -226,6 +226,24 @@ final class UsuarioDAO extends BaseDAO {
         $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         return $resultado;
+    }
+
+    /**
+     * Busca un usuario por correo electrónico.
+     * @param correo Correo del usuario a buscar.
+     * @return array|false Datos del usuario si existe, false en caso contrario.
+     */
+    public function findByEmail(string $correo): array|false
+    {
+        $sql = "SELECT u.*, p.nombre AS nombrePerfil 
+                FROM {$this->table} u
+                LEFT JOIN perfiles p ON u.idPerfil = p.idPerfil
+                WHERE u.correo = :correo";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([":correo" => $correo]);
+        
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: false;
     }
 
 }

@@ -122,5 +122,15 @@ final class ProgramacionDAO extends BaseDAO {
 		]);
 	}
 
+	public function actualizarEstadoProgramacion(int $idProgramacion, int $idEstadoProgramacion): void
+	{
+		$sql = "UPDATE {$this->table} SET idEstadoProgramacion = :idEstadoProgramacion WHERE idProgramacion = :idProgramacion";
+		$stmt = $this->connection->prepare($sql);
+		$stmt->execute([
+			"idEstadoProgramacion" => $idEstadoProgramacion,
+			"idProgramacion" => $idProgramacion
+		]);
+	}
+
 }
 

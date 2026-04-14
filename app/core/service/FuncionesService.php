@@ -38,18 +38,11 @@ final class FuncionesService implements InterfaceService{
         //primera validacion...
         $this->validarSalaHabilitada($dto->getIdSala());
 
-
-        //segunda validacion
-        $this->validarProgramacionVigente($dto->getIdProgramacion());
-
-        //tercera validacion
-        $this->validarFuncionExistente($dto);
-
-        //esta es la cuarta y ultima
-        // La programación se deberia asignar a la programación que tenga la misma fecham, porfavor que esto funcione...
-        $idProgramacion = $this->obtenerProgramacionVigentePorFecha($dto->getFecha());
+        // La programación se asigna automáticamente según la fecha de la función.
+        $idProgramacion = $this->obtenerProgramacionPorFecha($dto->getFecha());
         $dto->setIdProgramacion($idProgramacion);
 
+        //tercera validacion
         $this->validarFuncionExistente($dto);
 
         $this->dao->save($dto->toArray());
@@ -80,12 +73,12 @@ final class FuncionesService implements InterfaceService{
     }
 
 
-    //segunda validacion, al crear una función, esta se debe asignar a una programación vigente
+    //segunda validacion, la programación asociada no debe estar cancelada
     public function validarProgramacionVigente(int $idProgramacion): void{
         $programacionService = new ProgramacionService();
         $programacionDTO = $programacionService->load($idProgramacion);
-        if($programacionDTO->getIdEstadoProgramacion() != ProgramacionService::ESTADO_VIGENTE){
-            throw new \Exception("La programación seleccionada no está vigente.");
+        if($programacionDTO->getIdEstadoProgramacion() == ProgramacionService::ESTADO_CANCELADA){
+            throw new \Exception("La programación seleccionada está cancelada.");
         }
     }
 
@@ -108,34 +101,42 @@ final class FuncionesService implements InterfaceService{
 
     //cuarta validacion? al crear una función, "en función" de la fecha (valga la redundancia) se debe asignar a una programación con la misma fecha
     //probar? ni siquiera me atrevo, por dios que funcione
-    private function obtenerProgramacionVigentePorFecha(\DateTime $fechaFuncion): int
+    private function obtenerProgramacionPorFecha(\DateTime $fechaFuncion): int
     {
         $programacionService = new ProgramacionService();
-        $programacionesVigentes = $programacionService->list([
-            "idEstadoProgramacion" => ProgramacionService::ESTADO_VIGENTE
-        ]);
+        $programaciones = $programacionService->list([]);
 
         $coincidencias = [];
         $fechaObjetivo = (clone $fechaFuncion)->setTime(0, 0, 0);
 
-        foreach ($programacionesVigentes as $programacion) {
+        foreach ($programaciones as $programacion) {
+            if ((int)$programacion["idEstadoProgramacion"] === ProgramacionService::ESTADO_CANCELADA) {
+                continue;
+            }
+
             $inicio = (new \DateTime($programacion["fechaInicio"]))->setTime(0, 0, 0);
             $fin = (new \DateTime($programacion["fechaFin"]))->setTime(0, 0, 0);
 
             if ($fechaObjetivo >= $inicio && $fechaObjetivo <= $fin) {
-                $coincidencias[] = (int)$programacion["idProgramacion"];
+                $coincidencias[] = $programacion;
             }
         }
 
         if (count($coincidencias) === 0) {
-            throw new \Exception("No existe una programación vigente para la fecha seleccionada.");
+            throw new \Exception("No existe una programación activa para la fecha seleccionada.");
+        }
+
+        foreach ($coincidencias as $programacion) {
+            if ((int)$programacion["idEstadoProgramacion"] === ProgramacionService::ESTADO_VIGENTE) {
+                return (int)$programacion["idProgramacion"];
+            }
         }
 
         if (count($coincidencias) > 1) {
-            throw new \Exception("Existe más de una programación vigente para la fecha seleccionada.");
+            throw new \Exception("Existe más de una programación activa para la fecha seleccionada.");
         }
 
-        return $coincidencias[0];
+        return (int)$coincidencias[0]["idProgramacion"];
     }
 
     

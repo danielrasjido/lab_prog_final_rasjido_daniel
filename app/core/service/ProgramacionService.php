@@ -54,6 +54,7 @@ final class ProgramacionService implements InterfaceService
         $this->validarProgramacionExistente(new ProgramacionDTO($data));
 
         $this->dao->save($data);
+        $this->sincronizarProgramacionVigenteActual();
     }
 
     public function update(InterfaceDto $dto): void
@@ -70,6 +71,7 @@ final class ProgramacionService implements InterfaceService
         );
 
         $this->dao->update($data);
+        $this->sincronizarProgramacionVigenteActual();
     }
 
     public function delete(InterfaceDto $dto): void
@@ -81,6 +83,7 @@ final class ProgramacionService implements InterfaceService
 
     public function list(array $filters): array
     {
+        $this->sincronizarProgramacionVigenteActual();
         return $this->dao->list($filters);
     }
 
@@ -146,13 +149,17 @@ final class ProgramacionService implements InterfaceService
         $data = $dto->toArray();
         $fechaInicio = new \DateTime($data['fechaInicio']);
 
-        $filtros = [
-            'fechaInicio' => $fechaInicio->format('Y-m-d')
-        ];
+        $programacionesExistentes = $this->dao->list([]);
+        $fechaInicioBuscada = $fechaInicio->format('Y-m-d');
 
-        $programacionesExistentes = $this->dao->list($filtros);
-        if (count($programacionesExistentes) > 0) {
-            throw new \Exception("Ya existe una programación que inicia el " . $fechaInicio->format('Y-m-d') . ".");
+        foreach ($programacionesExistentes as $programacion) {
+            if ((int)$programacion['idEstadoProgramacion'] === self::ESTADO_CANCELADA) {
+                continue;
+            }
+
+            if ($programacion['fechaInicio'] === $fechaInicioBuscada) {
+                throw new \Exception("Ya existe una programación activa que inicia el " . $fechaInicioBuscada . ".");
+            }
         }
 
     }
@@ -161,6 +168,62 @@ final class ProgramacionService implements InterfaceService
     public function cancelarProgramacion(int $idProgramacion): void
     {
         $this->dao->cancelarProgramacion($idProgramacion);
+        $this->sincronizarProgramacionVigenteActual();
+    }
+
+    private function sincronizarProgramacionVigenteActual(): void
+    {
+        $programaciones = $this->dao->list([]);
+        $hoy = (new \DateTime())->setTime(0, 0, 0);
+        $programacionActual = null;
+
+        foreach ($programaciones as $programacion) {
+            $estado = (int)$programacion['idEstadoProgramacion'];
+
+            if ($estado === self::ESTADO_CANCELADA) {
+                continue;
+            }
+
+            $inicio = (new \DateTime($programacion['fechaInicio']))->setTime(0, 0, 0);
+            $fin = (new \DateTime($programacion['fechaFin']))->setTime(0, 0, 0);
+
+            if ($hoy < $inicio || $hoy > $fin) {
+                if ($estado === self::ESTADO_VIGENTE) {
+                    $this->dao->actualizarEstadoProgramacion((int)$programacion['idProgramacion'], self::ESTADO_PROGRAMADA);
+                }
+                continue;
+            }
+
+            if ($programacionActual === null) {
+                $programacionActual = $programacion;
+                continue;
+            }
+
+            if ((int)$programacion['idEstadoProgramacion'] === self::ESTADO_VIGENTE_EXCEPCION
+                && (int)$programacionActual['idEstadoProgramacion'] !== self::ESTADO_VIGENTE_EXCEPCION) {
+                $programacionActual = $programacion;
+            }
+        }
+
+        if ($programacionActual === null) {
+            return;
+        }
+
+        foreach ($programaciones as $programacion) {
+            $idProgramacion = (int)$programacion['idProgramacion'];
+            $estado = (int)$programacion['idEstadoProgramacion'];
+
+            if ($idProgramacion === (int)$programacionActual['idProgramacion']) {
+                if ($estado !== self::ESTADO_VIGENTE) {
+                    $this->dao->actualizarEstadoProgramacion($idProgramacion, self::ESTADO_VIGENTE);
+                }
+                continue;
+            }
+
+            if ($estado === self::ESTADO_VIGENTE) {
+                $this->dao->actualizarEstadoProgramacion($idProgramacion, self::ESTADO_PROGRAMADA);
+            }
+        }
     }
 
 }
