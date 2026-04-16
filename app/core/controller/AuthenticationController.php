@@ -22,11 +22,12 @@ final class AuthenticationController extends BaseController implements Interface
     public function index(Request $request, Response $response): void
     {
         if (isset($_SESSION["usuario"])) {
-            header("Location: " . APP_URL . "home/index");
+            header("Location: " . APP_URL . "/home/index");
             return;
         }
-        array_push($this->scripts, "/app/js/authentication/index.js");
-        require_once APP_FILE_LOGIN;
+         array_push($this->scripts, "/app/js/authentication/index.js");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
     }
 
     public function login(Request $request, Response $response): void
@@ -41,7 +42,7 @@ final class AuthenticationController extends BaseController implements Interface
     {
         $this->service->logout();
         $this->setCurrentView($request);
-        header("refresh:3;url=" . APP_URL . "authentication/index");
+        header("refresh:3;url=" . APP_URL . "/authentication/index");
         require_once APP_FILE_LOGOUT;
     }
 

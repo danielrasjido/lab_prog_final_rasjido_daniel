@@ -19,8 +19,42 @@
                     <p class="text-center mb-0">
                         ¿No tienes cuenta? <a href="#">Contacta al administrador</a>
                     </p>
+                     <!-- CONTENEDOR DEMO -->
+                    <div class="card bg-light border">
+                        <div class="card-body">
+                            <h6 class="card-title text-center mb-3">Cuenta demo (Administrador)</h6>
+
+                            <div class="mb-2 d-flex justify-content-between align-items-center">
+                                <span id="demoCorreo">admin@gmail.com</span>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoCorreo')">
+                                    Copiar
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span id="demoPassword">123456789</span>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoPassword')">
+                                    Copiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script id="p9y5kq">
+function copiarTexto(idElemento) {
+    const texto = document.getElementById(idElemento).innerText;
+
+    navigator.clipboard.writeText(texto)
+        .then(() => {
+            console.log("Copiado al portapapeles");
+        })
+        .catch(err => {
+            console.error("Error al copiar: ", err);
+        });
+}
+</script>

@@ -235,7 +235,7 @@ final class UsuarioDAO extends BaseDAO {
      */
     public function findByEmail(string $correo): array|false
     {
-        $sql = "SELECT u.*, p.nombre AS nombrePerfil 
+        $sql = "SELECT u.*, p.perfil AS nombrePerfil 
                 FROM {$this->table} u
                 LEFT JOIN perfiles p ON u.idPerfil = p.idPerfil
                 WHERE u.correo = :correo";
