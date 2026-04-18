@@ -26,6 +26,22 @@ final class CatalogoController extends BaseController implements InterfaceContro
         require_once APP_FILE_TEMPLATE;
     }
 
+    public function entradas(Request $request, Response $response): void
+    {
+        array_push($this->scripts, "/app/js/catalogo/entradas.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
+    }
+
+    public function funciones(Request $request, Response $response): void
+    {
+        array_push($this->scripts, "/app/js/catalogo/funciones.js");
+
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
+    }
+
     public function create(Request $request, Response $response): void
     {
         throw new \Exception("No se puede acceder a esta ruta.");

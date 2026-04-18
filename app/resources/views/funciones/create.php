@@ -26,8 +26,24 @@
         </div>
 
         <div class="mb-3">
-            <label for="datoHora" class="form-label">Hora</label>
-            <input type="time" class="form-control" name="datoHora" id="datoHora" required>
+            <label class="form-label">Hora</label>
+            <div class="row g-2">
+                <div class="col-6">
+                    <select class="form-select" id="datoHoraHora" required>
+                        <option value="">Hora</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <select class="form-select" id="datoHoraMinuto" required>
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" name="datoHora" id="datoHora" required>
+            <div class="form-text">Los minutos se limitan a 00, 15, 30 o 45.</div>
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar función</button>

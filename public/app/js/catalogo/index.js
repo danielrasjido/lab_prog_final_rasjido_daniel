@@ -1,1 +1,4 @@
-console.log("catalogo index.js cargado");
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("modulo catalogo index.js cargado");
+
+})

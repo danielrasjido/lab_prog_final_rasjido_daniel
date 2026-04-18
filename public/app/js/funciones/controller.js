@@ -120,6 +120,14 @@ function capturarDatosFuncion() {
         return null;
     }
 
+    const partesHora = dtHora.split(":");
+    const minutos = Number(partesHora[1] ?? 0);
+
+    if (Number.isNaN(minutos) || minutos % 15 !== 0) {
+        alert("La hora debe tener minutos 00, 15, 30 o 45.");
+        return null;
+    }
+
     let funcion = {
         idPelicula: Number(dtIdPelicula),
         idSala: Number(dtIdSala),
