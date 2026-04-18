@@ -65,6 +65,9 @@ const APP_LOGIN_ACTION = 'index';
 //generar token proximamente investigar
 
 const APP_TOKEN = 'token';
+define('APP_PERFIL_ADMIN', 1);
+define('APP_PERFIL_OPERADOR', 2);
+define('APP_PERFIL_EXTERNO', 3);
 
 
 // APP_URL      => usar en navegador (href, src, redirects HTTP).
@@ -74,3 +77,4 @@ const APP_TOKEN = 'token';
 // Si PHP necesita require/file_exists -> APP_BASE_PATH o APP_URI.
 // APP_DIR_*    => carpetas físicas derivadas de APP_URI.
 // APP_FILE_*   => archivos físicos concretos (template, logs, views).
+

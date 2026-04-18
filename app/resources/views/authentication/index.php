@@ -22,23 +22,64 @@
                      <!-- CONTENEDOR DEMO -->
                     <div class="card bg-light border">
                         <div class="card-body">
-                            <h6 class="card-title text-center mb-3">Cuenta demo (Administrador)</h6>
+                            <h6 class="card-title text-center mb-3">Cuenta demo (ADMINISTRADOR)</h6>
 
                             <div class="mb-2 d-flex justify-content-between align-items-center">
-                                <span id="demoCorreo">admin@gmail.com</span>
-                                <button class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoCorreo')">
+                                <span id="demoCorreoAdmin">admin@gmail.com</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoCorreoAdmin')">
                                     Copiar
                                 </button>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center">
-                                <span id="demoPassword">123456789</span>
-                                <button class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoPassword')">
+                                <span id="demoPasswordAdmin">123456789</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoPasswordAdmin')">
                                     Copiar
                                 </button>
                             </div>
                         </div>
+
+                        <div class="card-body">
+                            <h6 class="card-title text-center mb-3">Cuenta demo (OPERADOR)</h6>
+
+                            <div class="mb-2 d-flex justify-content-between align-items-center">
+                                <span id="demoCorreoOperador">operador@gmail.com</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoCorreoOperador')">
+                                    Copiar
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span id="demoPasswordOperador">123456789</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoPasswordOperador')">
+                                    Copiar
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="card-body">
+                            <h6 class="card-title text-center mb-3">Cuenta demo (EXTERNO)</h6>
+
+                            <div class="mb-2 d-flex justify-content-between align-items-center">
+                                <span id="demoCorreoExterno">externo@gmail.com</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoCorreoExterno')">
+                                    Copiar
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span id="demoPasswordExterno">123456789</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="copiarTexto('demoPasswordExterno')">
+                                    Copiar
+                                </button>
+                            </div>
+                        </div>
+
+
                     </div>
+
+                    
                 </div>
             </div>
         </div>
