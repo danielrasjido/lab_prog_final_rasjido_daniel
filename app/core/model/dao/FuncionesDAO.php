@@ -124,13 +124,29 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
         INNER JOIN peliculas p ON p.idPelicula = f.idPelicula";
         $conditions = [];
         $params = [];
+        $columnMap = [
+            'idFuncion' => 'f.idFuncion',
+            'idPelicula' => 'f.idPelicula',
+            'idProgramacion' => 'f.idProgramacion',
+            'idSala' => 'f.idSala',
+            'precio' => 'f.precio',
+            'fecha' => 'f.fecha',
+            'hora' => 'f.hora'
+        ];
 
         if (!empty($filters)) {
             foreach ($filters as $key => $value) {
-                $conditions[] = "$key = :$key";
+                if (!array_key_exists($key, $columnMap)) {
+                    continue;
+                }
+
+                $conditions[] = "{$columnMap[$key]} = :$key";
                 $params[":$key"] = $value;
             }
-            $sql .= " WHERE " . implode(" AND ", $conditions);
+
+            if (!empty($conditions)) {
+                $sql .= " WHERE " . implode(" AND ", $conditions);
+            }
         }
 
         $stmt = $this->connection->prepare($sql);

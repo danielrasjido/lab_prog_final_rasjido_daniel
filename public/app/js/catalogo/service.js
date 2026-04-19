@@ -21,9 +21,31 @@ const request = async (url, options = {}) => {
 
 export const catalogoService = {
     listPeliculas: (filters = {}) => {
-        return request("peliculas/list", {
+        return request("catalogo/list", {
             method: "POST",
             body: JSON.stringify(filters)
         });
     },
+    loadPelicula: (idPelicula) => {
+        return request(`catalogo/load/${idPelicula}`, {
+            method: "GET"
+        });
+    },
+    comentar: (data) => {
+        return request("catalogo/comentar", {
+            method: "POST",
+            body: JSON.stringify(data)
+        });
+    },
+    comprar: (idFuncion) => {
+        return request("catalogo/comprar", {
+            method: "POST",
+            body: JSON.stringify({ idFuncion })
+        });
+    },
+    misEntradas: () => {
+        return request("catalogo/misEntradas", {
+            method: "GET"
+        });
+    }
 }

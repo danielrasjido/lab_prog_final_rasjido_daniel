@@ -116,12 +116,12 @@ final class EntradasDAO extends BaseDAO {
                 WHERE 1=1";
 
         if(isset($filters["idFuncion"])){
-            $sql .= " AND idFuncion = :idFuncion";
+            $sql .= " AND e.idFuncion = :idFuncion";
             $parametros["idFuncion"] = (Int)$filters["idFuncion"];
         }
 
         if(isset($filters["idUsuario"])){
-            $sql .= " AND idUsuario = :idUsuario";
+            $sql .= " AND e.idUsuario = :idUsuario";
             $parametros["idUsuario"] = (Int)$filters["idUsuario"];
         }
 
@@ -135,7 +135,7 @@ final class EntradasDAO extends BaseDAO {
             $parametros["anulada"] = (Int)$filters["anulada"];
         }
 
-        $sql .= " ORDER BY fechaHora DESC";
+        $sql .= " ORDER BY e.fechaHora DESC";
 
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($parametros);
