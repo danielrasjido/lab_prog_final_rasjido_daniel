@@ -12,6 +12,16 @@
         </div>
 
         <div class="mb-3">
+            <label for="datoArchivoImagenCartelera" class="form-label">Reemplazar imagen de cartelera</label>
+            <input type="file" class="form-control" id="datoArchivoImagenCartelera" accept="image/*" disabled>
+            <div class="form-text">Si seleccionas un archivo, reemplazará la imagen actual.</div>
+        </div>
+
+        <div class="mb-3">
+            <img id="previewImagenCartelera" src="" alt="Vista previa de imagen" class="img-fluid rounded d-none" style="max-height: 220px;">
+        </div>
+
+        <div class="mb-3">
             <label for="datoActores" class="form-label">Actores</label>
             <input type="text" class="form-control" name="datoActores" id="datoActores" disabled>
         </div>
@@ -76,7 +86,7 @@
 
         <div class="mb-3">
         <button id="btnActualizar" type="submit" class="btn btn-primary" disabled>Actualizar</button>
-        <a class="btn btn-primary" href="usuario/index">Volver</a>
+        <a class="btn btn-primary" href="peliculas/index">Volver</a>
         <button id="btnEditar" type="button" class="btn btn-primary">Editar</button>
         <button id="btnCancelarEdicion" class="btn btn-warning" disabled>Cancelar edición</button>
         <button type="button" id="btnEliminarRegistro" class="btn btn-danger">Eliminar registro actual</button>

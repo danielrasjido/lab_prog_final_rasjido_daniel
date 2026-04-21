@@ -1,6 +1,7 @@
 import { peliculasController } from "./controller.js";
 document.addEventListener("DOMContentLoaded", event => {
     console.log("hola desde modulo peliculas dom cargado")
+    peliculasController.initCreateForm();
     const url = window.location.pathname.split('/');
     const indexUrl = window.location.pathname.replace(/\/edit\/\d+$/, '/index');
     console.log("url de indexurl:", indexUrl);

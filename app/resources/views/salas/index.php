@@ -1,5 +1,3 @@
-<h1>Modulo salas</h1>
-
 <nav class="navbar bg-body-tertiary">
     <div class="container-fluid ">
         <form id="formBusqueda" action="" class="d-inline-flex align-items-center gap-2">
@@ -30,8 +28,10 @@
     </div>
 
 </nav>
-
-<table id="tablaSalas" class="table table-striped text-center">
+<div class="card shadow-sm mt-4">
+    <div class="card-body px-3 px-md-4 m-1">
+        <div class="table-responsive rounded overflow-hidden border">
+            <table id="tablaSalas" class="table table-striped text-center align-middle mb-0">
     <thead>
         <tr>
             <th>Nro de sala</th>
@@ -45,4 +45,7 @@
 
 
     </tbody>
-</table>
+            </table>
+        </div>
+    </div>
+</div>

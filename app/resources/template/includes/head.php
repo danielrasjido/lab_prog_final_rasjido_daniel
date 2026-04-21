@@ -7,6 +7,7 @@
 <base href="<?= APP_URL ?>/">
 
 <link rel="stylesheet" href="http://localhost/lab_prog_final_rasjido_daniel/public/app/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://localhost/lab_prog_final_rasjido_daniel/public/app/css/stylePersonalizado.css">
 <script src="http://localhost/lab_prog_final_rasjido_daniel/public/app/js/bootstrap/bootstrap.bundle.min.js"></script>
 <title>Sistema de Cine</title>
 

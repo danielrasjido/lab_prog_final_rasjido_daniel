@@ -7,7 +7,9 @@
     ?>
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand d-flex align-items-center" href="home">
+                <img src="/lab_prog_final_rasjido_daniel/public/app/assets/logocine.png" alt="Logo Cine" style="height: 40px; object-fit: contain;" />
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">

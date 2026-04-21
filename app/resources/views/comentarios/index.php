@@ -1,18 +1,8 @@
-<div>Bienvenidooooooo al modulo comentariooooos</div>
 
-
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid ">
-        <form id="formBusqueda" action="" class="d-inline-flex align-items-center gap-2">
-            <button class="btn btn-primary">Filtros</button>
-        </form>
-
-    </div>
-
-</nav>
-
-
-<table id="tablaComentarios" class="table table-striped text-center">
+<div class="card shadow-sm mt-4">
+    <div class="card-body px-3 px-md-4 m-1">
+        <div class="table-responsive rounded overflow-hidden border">
+            <table id="tablaComentarios" class="table table-striped text-center align-middle mb-0">
     <thead>
         <tr>
             <th>Usuario</th>
@@ -26,4 +16,7 @@
     
         
     </tbody>
-</table>
+            </table>
+        </div>
+    </div>
+</div>

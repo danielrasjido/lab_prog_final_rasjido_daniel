@@ -7,8 +7,13 @@
         </div>
 
         <div class="mb-3">
-            <label for="datoImagenCartelera" class="form-label">Imagen Cartelera (URL)</label>
-            <input type="text" class="form-control" name="datoImagenCartelera" id="datoImagenCartelera">
+            <label for="datoArchivoImagenCartelera" class="form-label">Cargar imagen de cartelera</label>
+            <input type="file" class="form-control" id="datoArchivoImagenCartelera" accept="image/*" required>
+            <div class="form-text">Puedes usar URL o subir un archivo. Si subes archivo, se usará esa imagen.</div>
+        </div>
+
+        <div class="mb-3">
+            <img id="previewImagenCartelera" src="" alt="Vista previa de imagen" class="img-fluid rounded d-none" style="max-height: 220px;">
         </div>
 
         <div class="mb-3">
@@ -74,7 +79,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar película</button>
+        <button type="button" id="btnGuardarPelicula" class="btn btn-primary">Guardar película</button>
         <a class="btn btn-secondary" href="peliculas/index">Volver a películas</a>
     </form>
 </main>

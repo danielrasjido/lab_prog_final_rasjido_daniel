@@ -2,6 +2,64 @@ import {peliculasService} from './service.js';
 
 
 export const peliculasController = {
+    initCreateForm: () => {
+        const inputArchivo = document.getElementById("datoArchivoImagenCartelera");
+        const inputImagen = document.getElementById("datoImagenCartelera");
+        const preview = document.getElementById("previewImagenCartelera");
+
+        if (!inputArchivo || !preview) {
+            return;
+        }
+
+        inputArchivo.addEventListener("change", () => {
+            const archivo = inputArchivo.files && inputArchivo.files[0] ? inputArchivo.files[0] : null;
+
+            if (!archivo) {
+                if (inputImagen && inputImagen.value.trim() !== "") {
+                    preview.src = inputImagen.value.trim();
+                    preview.classList.remove("d-none");
+                } else {
+                    preview.src = "";
+                    preview.classList.add("d-none");
+                }
+                return;
+            }
+
+            if (!archivo.type.startsWith("image/")) {
+                alert("El archivo seleccionado no es una imagen válida.");
+                inputArchivo.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                preview.src = reader.result;
+                preview.classList.remove("d-none");
+            };
+            reader.readAsDataURL(archivo);
+        });
+
+        if (inputImagen) {
+            inputImagen.addEventListener("blur", () => {
+                if (!preview) {
+                    return;
+                }
+
+                const valor = inputImagen.value.trim();
+                if (valor === "") {
+                    return;
+                }
+
+                if (inputArchivo.files && inputArchivo.files.length > 0) {
+                    return;
+                }
+
+                preview.src = valor;
+                preview.classList.remove("d-none");
+            });
+        }
+    },
+
     load: (id) => {
         peliculasService.load(id)
             .then(response => {
@@ -28,41 +86,45 @@ export const peliculasController = {
             document.getElementById("datoFechaEstreno").value = pelicula.fechaEstreno;
             document.getElementById("datoFechaIngreso").value = pelicula.fechaIngreso;
             document.getElementById("datoDisponibilidad").value = pelicula.disponibilidad;
+
+            const preview = document.getElementById("previewImagenCartelera");
+            if (preview && pelicula.imagenCartelera) {
+                preview.src = pelicula.imagenCartelera;
+                preview.classList.remove("d-none");
+            }
             })
              .catch(error => {
             console.error("Error al cargar película:", error.message);
         });
     },
-    save: () => {
-        const pelicula = capturarDatosPelicula();
+    save: async () => {
+        const pelicula = await capturarDatosPelicula();
         if(!pelicula){
             console.error("no se pudo capturar la pelicula");
+            return;
         }
-        peliculasService.save(pelicula).then(response => {
-            if(response.error){
-                console.error("no se pudo guardar la pelicula" + error);
-                //añadir toast mas adelante
-            } else {
-                console.log("pelicula guardada con exito");
-                //añadir toast mas adelante
-            }
-        })
+        try {
+            await peliculasService.save(pelicula);
+            alert("Película guardada con éxito.");
+        } catch (error) {
+            alert(error.message || "No se pudo guardar la película.");
+            throw error;
+        }
     },
-    update: () => {
-        const pelicula = capturarDatosPeliculaUpdate();
+    update: async () => {
+        const pelicula = await capturarDatosPeliculaUpdate();
         if(!pelicula){
             console.error("no se pudo capturar la pelicula");
+            return;
         }
-        peliculasService.update(pelicula).then(response => {
-            if(response.error){
-                console.error("no se pudo actualizar la pelicula" + error);
-                //añadir toast mas adelante
-            } else {
-                console.log("pelicula actualizada con exito");
-                this.enableForm(false)
-                //añadir toast mas adelante
-            }
-        })
+        try {
+            await peliculasService.update(pelicula);
+            alert("Película actualizada con éxito.");
+            peliculasController.enableForm(false);
+        } catch (error) {
+            alert(error.message || "No se pudo actualizar la película.");
+            throw error;
+        }
     },
     delete: (id) => {
         if (!confirm("¿Está seguro que desea eliminar esta película? Esta acción no se puede deshacer.")) {
@@ -79,8 +141,18 @@ export const peliculasController = {
             }
         })
     },
-    list: (filters) => {
-        peliculasService.list(filters).then(peliculas => mostrarPeliculas(peliculas))
+    list: async (filters) => {
+        try {
+            const resultado = await peliculasService.list(filters);
+            const peliculas = Array.isArray(resultado)
+                ? resultado
+                : Object.values(resultado || {});
+
+            mostrarPeliculas(peliculas);
+        } catch (error) {
+            console.error("Error al listar películas:", error.message || error);
+            mostrarErrorListado(error.message || "No se pudieron listar las películas.");
+        }
     },
     enableForm: (estado) => {
         let listaBotones = document.querySelectorAll('.form-control');
@@ -117,7 +189,16 @@ export const peliculasController = {
 function mostrarPeliculas(peliculas){
     console.log("mostrar peliculas")
     let tabla = document.getElementById("cuerpoDeLaTabla");
+    if (!tabla) {
+        return;
+    }
+
     tabla.innerHTML = '';
+
+    if (!Array.isArray(peliculas) || peliculas.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="16" class="text-muted">No hay películas para mostrar.</td></tr>`;
+        return;
+    }
 
     for (let i = 0; i < peliculas.length; i++) {
         console.log("bucle")
@@ -128,9 +209,13 @@ function mostrarPeliculas(peliculas){
         //creamos fila :)
         let tr = document.createElement("tr");
         //modificamos el contenido de la fila
+        const imagenHtml = p.imagenCartelera
+            ? `<img src="${escapeHtml(p.imagenCartelera)}" alt="Poster" style="max-height: 70px; max-width: 70px; object-fit: cover;" class="rounded">`
+            : "Sin imagen";
+
         tr.innerHTML = `
             <td>${p.idPelicula}</td>
-            <td>${p.imagenCartelera}</td>
+            <td>${imagenHtml}</td>
             <td>${p.nombre}</td>
             <td>${p.actores}</td>
             <td>${p.sinopsis}</td>
@@ -158,10 +243,28 @@ function mostrarPeliculas(peliculas){
 
 }
 
-function capturarDatosPelicula(){
+function mostrarErrorListado(mensaje) {
+    const tabla = document.getElementById("cuerpoDeLaTabla");
+    if (!tabla) {
+        return;
+    }
+
+    tabla.innerHTML = `<tr><td colspan="16" class="text-danger">${escapeHtml(mensaje)}</td></tr>`;
+}
+
+function escapeHtml(valor) {
+    return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+async function capturarDatosPelicula(){
 
         const dtNombrePelicula = document.getElementById("datoNombrePelicula").value.trim();
-        const dtImagenCartelera = document.getElementById("datoImagenCartelera").value.trim();
+        const dtImagenCartelera = await obtenerImagenCarteleraValue();
         const dtActores = document.getElementById("datoActores").value.trim();
         const dtSinopsis = document.getElementById("datoSinopsis").value.trim();
         const dtDuracion = document.getElementById("datoDuracion").value.trim();
@@ -192,6 +295,11 @@ function capturarDatosPelicula(){
             disponibilidad: dtDisponibilidad
         }
 
+        if(!dtImagenCartelera){
+            alert("Debes indicar una imagen de cartelera (URL o archivo).");
+            return null;
+        }
+
         return pelicula;
 
     }
@@ -200,14 +308,14 @@ function capturarDatosPelicula(){
      * Lo mismo que capturarDatosPelicula pero acá captura tambien el id
      * @returns 
      */
-    function capturarDatosPeliculaUpdate(){
+    async function capturarDatosPeliculaUpdate(){
 
         const urlId = window.location.pathname.split('/')
         const id = urlId[urlId.length - 1];
 
         const idPelicula = parseInt(id);
         const dtNombrePelicula = document.getElementById("datoNombrePelicula").value.trim();
-        const dtImagenCartelera = document.getElementById("datoImagenCartelera").value.trim();
+        const dtImagenCartelera = await obtenerImagenCarteleraValue();
         const dtActores = document.getElementById("datoActores").value.trim();
         const dtSinopsis = document.getElementById("datoSinopsis").value.trim();
         const dtDuracion = document.getElementById("datoDuracion").value.trim();
@@ -239,9 +347,40 @@ function capturarDatosPelicula(){
             disponibilidad: dtDisponibilidad
         }
 
+        if(!dtImagenCartelera){
+            alert("Debes indicar una imagen de cartelera (URL o archivo).");
+            return null;
+        }
+
         return pelicula;
 
     }
+
+function obtenerImagenCarteleraValue(){
+    const inputArchivo = document.getElementById("datoArchivoImagenCartelera");
+    const inputImagen = document.getElementById("datoImagenCartelera");
+
+    const imagenUrl = inputImagen ? inputImagen.value.trim() : "";
+    const archivo = inputArchivo && inputArchivo.files && inputArchivo.files.length > 0
+        ? inputArchivo.files[0]
+        : null;
+
+    if (!archivo) {
+        return Promise.resolve(imagenUrl);
+    }
+
+    return new Promise((resolve, reject) => {
+        if (!archivo.type.startsWith("image/")) {
+            reject(new Error("El archivo seleccionado no es una imagen válida."));
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("No se pudo leer el archivo de imagen."));
+        reader.readAsDataURL(archivo);
+    });
+}
 
 /**
  
