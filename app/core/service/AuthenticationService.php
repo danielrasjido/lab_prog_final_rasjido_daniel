@@ -5,6 +5,7 @@ namespace app\core\service;
 
 use app\core\model\dao\UsuarioDAO;
 use app\core\model\dto\LoginDTO;
+use app\core\model\dto\UsuarioDTO;
 use app\libs\database\Connection;
 use app\libs\http\Request;
 use app\libs\http\Response;
@@ -65,5 +66,57 @@ final class AuthenticationService
             );
         }
         session_destroy();
+    }
+
+    public function registrarUsuarioExterno(array $data): void
+    {
+        $apellido = trim((string)($data['apellido'] ?? ''));
+        $nombre = trim((string)($data['nombre'] ?? ''));
+        $cuenta = trim((string)($data['cuenta'] ?? ''));
+        $correo = trim((string)($data['correo'] ?? ''));
+        $password = (string)($data['password'] ?? '');
+        $confirmacionPassword = (string)($data['confirmacionPassword'] ?? '');
+
+        if ($apellido === '' || $nombre === '' || $cuenta === '' || $correo === '' || $password === '') {
+            throw new \Exception('Todos los campos son obligatorios.');
+        }
+
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception('Debe ingresar un correo válido.');
+        }
+
+        if (mb_strlen($password) < 8) {
+            throw new \Exception('La contraseña debe tener al menos 8 caracteres.');
+        }
+
+        if ($password !== $confirmacionPassword) {
+            throw new \Exception('Las contraseñas no coinciden.');
+        }
+
+        $dto = new UsuarioDTO([
+            'idPerfil' => APP_PERFIL_EXTERNO,
+            'apellido' => $apellido,
+            'nombre' => $nombre,
+            'cuenta' => $cuenta,
+            'estado' => 1,
+            'password' => $password,
+            'correo' => $correo,
+            'resetPassword' => 0,
+        ]);
+
+        if ($dto->getIdPerfil() !== APP_PERFIL_EXTERNO) {
+            throw new \Exception('No fue posible asignar el perfil externo.');
+        }
+
+        if ($dto->getCorreo() === '') {
+            throw new \Exception('Debe ingresar un correo válido.');
+        }
+
+        if ($dto->getApellido() === '' || $dto->getNombre() === '' || $dto->getCuenta() === '') {
+            throw new \Exception('Todos los campos son obligatorios.');
+        }
+
+        $usuarioDao = new UsuarioDAO(Connection::get());
+        $usuarioDao->save($dto->toArray());
     }
 }

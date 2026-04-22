@@ -30,6 +30,13 @@ export const authenticationService = {
         });
     },
 
+    registrarUsuario: (usuario) => {
+        return request("authentication/registrarUsuario", {
+            method: "POST",
+            body: JSON.stringify(usuario)
+        });
+    },
+
     logout: () => {
         return request("authentication/logout", {
             method: "GET"

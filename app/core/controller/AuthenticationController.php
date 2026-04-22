@@ -25,7 +25,7 @@ final class AuthenticationController extends BaseController implements Interface
             header("Location: " . APP_URL . "/home/index");
             return;
         }
-         array_push($this->scripts, "/app/js/authentication/index.js");
+        array_push($this->scripts, "/app/js/authentication/index.js");
         $this->setCurrentView($request);
         require_once APP_FILE_TEMPLATE;
     }
@@ -44,6 +44,25 @@ final class AuthenticationController extends BaseController implements Interface
         $this->setCurrentView($request);
         header("refresh:3;url=" . APP_URL . "/authentication/index");
         require_once APP_FILE_LOGOUT;
+    }
+
+    public function registrarUsuario(Request $request, Response $response): void
+    {
+        if (isset($_SESSION["usuario"])) {
+            header("Location: " . APP_URL . "/home/index");
+            return;
+        }
+
+        if ($request->getMethod() === 'GET') {
+            array_push($this->scripts, "/app/js/authentication/register.js");
+            $this->view = 'authentication/registrar.php';
+            require_once APP_FILE_TEMPLATE;
+            return;
+        }
+
+        $this->service->registrarUsuarioExterno($request->getDataFromInput() ?? []);
+        $response->setMessage("Registro exitoso.");
+        $response->send();
     }
 
     public function create(Request $request, Response $response): void

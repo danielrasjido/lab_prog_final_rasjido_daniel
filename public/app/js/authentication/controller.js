@@ -16,5 +16,14 @@ export const authenticationController = {
         } catch (error) {
             console.error("Error al cerrar sesión:", error);
         }
+    },
+
+    registrarUsuario: async (usuario) => {
+        try {
+            await authenticationService.registrarUsuario(usuario);
+            window.location.href = "/lab_prog_final_rasjido_daniel/public/authentication/index?registro=ok";
+        } catch (error) {
+            throw error;
+        }
     }
 };

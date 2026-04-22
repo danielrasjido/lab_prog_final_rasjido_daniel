@@ -16,13 +16,17 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <header>
-        <?php
+    <?php $isAuthenticationView = isset($this->view) && str_starts_with($this->view, 'authentication/'); ?>
 
-            require_once APP_DIR_TEMPLATE . 'includes/menu.php';
+    <?php if (!$isAuthenticationView): ?>
+        <header>
+            <?php
 
-        ?>
-    </header>
+                require_once APP_DIR_TEMPLATE . 'includes/menu.php';
+
+            ?>
+        </header>
+    <?php endif; ?>
 
     <main>
         
@@ -35,13 +39,15 @@
 
     </main>
 
-    <footer class="bg-primary text-light py-3 mt-auto">
-        <?php
+    <?php if (!$isAuthenticationView): ?>
+        <footer class="bg-primary text-light py-3 mt-auto">
+            <?php
 
-            require_once APP_DIR_TEMPLATE . 'includes/footer.php';
+                require_once APP_DIR_TEMPLATE . 'includes/footer.php';
 
-        ?>
-    </footer>
+            ?>
+        </footer>
+    <?php endif; ?>
     
 </body>
 </html>

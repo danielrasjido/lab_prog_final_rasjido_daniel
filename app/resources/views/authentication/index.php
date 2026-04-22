@@ -1,3 +1,14 @@
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="toastRegistroExitoso" class="toast text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Usuario registrado correctamente. Ya puede iniciar sesión.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -17,7 +28,7 @@
                     </form>
                     <hr>
                     <p class="text-center mb-0">
-                        ¿No tienes cuenta? <a href="#">Contacta al administrador</a>
+                        ¿No tienes cuenta? <a href="authentication/registrarUsuario">Crear cuenta</a>
                     </p>
                      <!-- CONTENEDOR DEMO -->
                     <div class="card bg-light border">
