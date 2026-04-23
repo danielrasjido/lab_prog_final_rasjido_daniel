@@ -1,4 +1,5 @@
 import { funcionesService } from "./service.js";
+import { abrirInformeTabla } from "../shared/reportes.js";
 
 export const funcionesController = {
     initCreateForm: async () => {
@@ -39,6 +40,13 @@ export const funcionesController = {
             console.error("Error al guardar función:", error);
             throw error;
         }
+    },
+    exportToPDF: () => {
+        abrirInformeTabla({
+            tableSelector: "#tablaFunciones",
+            title: "Informe de funciones",
+            excludeColumns: [7]
+        });
     }
 }
 

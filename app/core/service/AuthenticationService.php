@@ -7,21 +7,21 @@ use app\core\model\dao\UsuarioDAO;
 use app\core\model\dto\LoginDTO;
 use app\core\model\dto\UsuarioDTO;
 use app\libs\database\Connection;
-use app\libs\http\Request;
-use app\libs\http\Response;
-use Exception;
 
 final class AuthenticationService
 {
+    private UsuarioDAO $usuarioDao;
+
+    public function __construct()
+    {
+        $this->usuarioDao = new UsuarioDAO(Connection::get());
+    }
 
 
     public function login(LoginDTO $login)
     {
-        $conn = Connection::get();
-
         //autenticacion del usuario
-        $usuarioDao = new UsuarioDAO($conn);
-        $usuario = $usuarioDao->findByEmail($login->getEmail());
+        $usuario = $this->usuarioDao->findByEmail($login->getEmail());
 
         if ($usuario === false) {
             throw new \Exception("Usuario no encontrado.");
@@ -116,7 +116,157 @@ final class AuthenticationService
             throw new \Exception('Todos los campos son obligatorios.');
         }
 
-        $usuarioDao = new UsuarioDAO(Connection::get());
-        $usuarioDao->save($dto->toArray());
+        $this->usuarioDao->save($dto->toArray());
+    }
+
+    public function solicitarRecuperacionPassword(string $correo): void
+    {
+        $correoLimpio = trim($correo);
+        if ($correoLimpio === '') {
+            throw new \Exception('Debe ingresar un correo electrónico.');
+        }
+
+        if (!filter_var($correoLimpio, FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception('Debe ingresar un correo electrónico válido.');
+        }
+
+        $usuario = $this->usuarioDao->findByEmail($correoLimpio);
+
+        // Respuesta neutra para no exponer qué correos existen.
+        if ($usuario === false) {
+            return;
+        }
+
+        $token = $this->generarTokenRecuperacion($usuario);
+        $urlReset = APP_URL . '/authentication/restablecerPassword?token=' . urlencode($token);
+
+        $asunto = 'Recuperacion de contrasena - Sistema de Cine';
+        $mensaje = "Hola " . $usuario['nombre'] . ",\n\n"
+            . "Recibimos una solicitud para restablecer tu contrasena.\n"
+            . "Haz clic en el siguiente enlace para continuar:\n"
+            . $urlReset . "\n\n"
+            . "Este enlace vence en 30 minutos. Si no solicitaste este cambio, ignora este correo.\n\n"
+            . "Sistema de Cine";
+
+        $headers = [
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=UTF-8',
+            'From: no-reply@sistemacine.local'
+        ];
+
+        $enviado = @mail($correoLimpio, $asunto, $mensaje, implode("\r\n", $headers));
+
+        if (!$enviado) {
+            throw new \Exception('No se pudo enviar el correo de recuperacion. Verifique la configuracion SMTP/PHP mail.');
+        }
+    }
+
+    public function restablecerPassword(string $token, string $password, string $confirmacionPassword): void
+    {
+        $token = trim($token);
+        if ($token === '') {
+            throw new \Exception('Token de recuperacion invalido.');
+        }
+
+        if (trim($password) === '' || trim($confirmacionPassword) === '') {
+            throw new \Exception('Debe completar ambos campos de contrasena.');
+        }
+
+        if (mb_strlen($password) < 8) {
+            throw new \Exception('La contrasena debe tener al menos 8 caracteres.');
+        }
+
+        if ($password !== $confirmacionPassword) {
+            throw new \Exception('Las contrasenas no coinciden.');
+        }
+
+        $usuario = $this->validarTokenRecuperacion($token);
+        $nuevoHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->usuarioDao->updatePasswordById((int)$usuario['idUsuario'], $nuevoHash);
+    }
+
+    private function generarTokenRecuperacion(array $usuario): string
+    {
+        $expiraEn = time() + (30 * 60);
+        $payload = [
+            'uid' => (int)$usuario['idUsuario'],
+            'em' => (string)$usuario['correo'],
+            'exp' => $expiraEn,
+            'pv' => $this->fingerprintPasswordHash((string)$usuario['password'])
+        ];
+
+        $payloadJson = json_encode($payload, JSON_UNESCAPED_UNICODE);
+        $payloadEncoded = $this->base64UrlEncode($payloadJson);
+        $firma = hash_hmac('sha256', $payloadEncoded, APP_PASSWORD_RESET_SECRET);
+
+        return $payloadEncoded . '.' . $firma;
+    }
+
+    private function validarTokenRecuperacion(string $token): array
+    {
+        $partes = explode('.', $token);
+        if (count($partes) !== 2) {
+            throw new \Exception('Token de recuperacion invalido.');
+        }
+
+        [$payloadEncoded, $firma] = $partes;
+        $firmaEsperada = hash_hmac('sha256', $payloadEncoded, APP_PASSWORD_RESET_SECRET);
+
+        if (!hash_equals($firmaEsperada, $firma)) {
+            throw new \Exception('Token de recuperacion invalido.');
+        }
+
+        $payloadJson = $this->base64UrlDecode($payloadEncoded);
+        $payload = json_decode($payloadJson, true);
+
+        if (!is_array($payload) || !isset($payload['uid'], $payload['em'], $payload['exp'], $payload['pv'])) {
+            throw new \Exception('Token de recuperacion invalido.');
+        }
+
+        if ((int)$payload['exp'] < time()) {
+            throw new \Exception('El enlace de recuperacion ha vencido.');
+        }
+
+        $usuario = $this->usuarioDao->findById((int)$payload['uid']);
+        if ($usuario === false) {
+            throw new \Exception('El usuario de recuperacion no existe.');
+        }
+
+        if (strcasecmp((string)$usuario['correo'], (string)$payload['em']) !== 0) {
+            throw new \Exception('Token de recuperacion invalido.');
+        }
+
+        $fingerprintActual = $this->fingerprintPasswordHash((string)$usuario['password']);
+        if (!hash_equals((string)$payload['pv'], $fingerprintActual)) {
+            throw new \Exception('Este enlace ya no es valido. Solicite uno nuevo.');
+        }
+
+        return $usuario;
+    }
+
+    private function fingerprintPasswordHash(string $passwordHash): string
+    {
+        return substr(hash('sha256', $passwordHash), 0, 20);
+    }
+
+    private function base64UrlEncode(string $data): string
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    private function base64UrlDecode(string $data): string
+    {
+        $padding = strlen($data) % 4;
+        if ($padding > 0) {
+            $data .= str_repeat('=', 4 - $padding);
+        }
+
+        $decoded = base64_decode(strtr($data, '-_', '+/'), true);
+        if ($decoded === false) {
+            throw new \Exception('Token de recuperacion invalido.');
+        }
+
+        return $decoded;
     }
 }

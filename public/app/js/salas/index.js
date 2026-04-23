@@ -1,9 +1,21 @@
 import { salasController } from "./controller.js";
+import { abrirInformeTabla } from "../shared/reportes.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("modulo salas index.js cargado");
     salasController.list({});
     salasController.save();
+
+    const btnGenerarPDF = document.getElementById("btnGenerarPDF");
+    if (btnGenerarPDF) {
+        btnGenerarPDF.addEventListener("click", () => {
+            abrirInformeTabla({
+                tableSelector: "#tablaSalas",
+                title: "Informe de salas",
+                excludeColumns: [3]
+            });
+        });
+    }
 
     //tabla
     const tabla = document.getElementById("cuerpoDeLaTabla");

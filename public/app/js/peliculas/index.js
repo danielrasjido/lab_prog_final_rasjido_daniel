@@ -1,8 +1,20 @@
 import { peliculasController } from './controller.js';
+import { abrirInformeTabla } from '../shared/reportes.js';
 
 document.addEventListener("DOMContentLoaded", event => {
     console.log("modulo peliculas index.js cargado")
     peliculasController.list({});
+
+    const btnGenerarPDF = document.getElementById("btnGenerarPDF");
+    if (btnGenerarPDF) {
+        btnGenerarPDF.addEventListener("click", () => {
+            abrirInformeTabla({
+                tableSelector: "#tablaPeliculas",
+                title: "Informe de peliculas",
+                excludeColumns: [15]
+            });
+        });
+    }
 
 
     //boton eliminar

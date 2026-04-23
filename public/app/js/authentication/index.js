@@ -4,10 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("autenticación index.js cargado");
 
     const registroExitoso = new URLSearchParams(window.location.search).get("registro");
+    const resetExitoso = new URLSearchParams(window.location.search).get("reset");
     const toastElement = document.getElementById("toastRegistroExitoso");
+    const toastResetElement = document.getElementById("toastResetExitoso");
 
     if (registroExitoso === "ok" && toastElement && typeof bootstrap !== "undefined") {
         const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+        window.history.replaceState({}, document.title, "/lab_prog_final_rasjido_daniel/public/authentication/index");
+    }
+
+    if (resetExitoso === "ok" && toastResetElement && typeof bootstrap !== "undefined") {
+        const toast = new bootstrap.Toast(toastResetElement);
         toast.show();
         window.history.replaceState({}, document.title, "/lab_prog_final_rasjido_daniel/public/authentication/index");
     }

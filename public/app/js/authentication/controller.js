@@ -25,5 +25,22 @@ export const authenticationController = {
         } catch (error) {
             throw error;
         }
+    },
+
+    solicitarRecuperacionPassword: async (correo) => {
+        try {
+            await authenticationService.solicitarRecuperacionPassword(correo);
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    restablecerPassword: async (token, password, confirmacionPassword) => {
+        try {
+            await authenticationService.restablecerPassword(token, password, confirmacionPassword);
+            window.location.href = "/lab_prog_final_rasjido_daniel/public/authentication/index?reset=ok";
+        } catch (error) {
+            throw error;
+        }
     }
 };

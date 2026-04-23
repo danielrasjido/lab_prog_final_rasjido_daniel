@@ -1,4 +1,5 @@
 import { entradasService } from "./service.js";
+import { abrirInformeTabla } from "../shared/reportes.js";
 
 
 export const entradasController = {
@@ -12,6 +13,13 @@ export const entradasController = {
             .catch(error => {
                 console.error("Error al cargar las entradas", error);
             });
+    },
+    exportToPDF: () => {
+        abrirInformeTabla({
+            tableSelector: "#tablaEntradas",
+            title: "Informe de entradas",
+            excludeColumns: [6]
+        });
     },
     enable: id => entradasService.enable(id),
     disable: id => entradasService.disable(id)

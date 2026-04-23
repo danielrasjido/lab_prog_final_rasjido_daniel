@@ -65,6 +65,7 @@ const APP_LOGIN_ACTION = 'index';
 //generar token proximamente investigar
 
 const APP_TOKEN = 'token';
+const APP_PASSWORD_RESET_SECRET = 'cambio_esta_clave_por_una_secreta_en_produccion_2026';
 define('APP_PERFIL_ADMIN', 1);
 define('APP_PERFIL_OPERADOR', 2);
 define('APP_PERFIL_EXTERNO', 3);

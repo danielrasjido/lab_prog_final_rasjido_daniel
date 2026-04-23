@@ -246,4 +246,27 @@ final class UsuarioDAO extends BaseDAO {
         return $result ?: false;
     }
 
+    public function findById(int $idUsuario): array|false
+    {
+        $sql = "SELECT * FROM {$this->table} WHERE idUsuario = :idUsuario LIMIT 1";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([":idUsuario" => $idUsuario]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: false;
+    }
+
+    public function updatePasswordById(int $idUsuario, string $hashedPassword): void
+    {
+        $sql = "UPDATE {$this->table}
+                SET password = :password,
+                    resetPassword = 0
+                WHERE idUsuario = :idUsuario";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([
+            ':password' => $hashedPassword,
+            ':idUsuario' => $idUsuario
+        ]);
+    }
+
 }

@@ -65,6 +65,42 @@ final class AuthenticationController extends BaseController implements Interface
         $response->send();
     }
 
+    public function recuperarPassword(Request $request, Response $response): void
+    {
+        if ($request->getMethod() === 'GET') {
+            array_push($this->scripts, "/app/js/authentication/forgot.js");
+            $this->view = 'authentication/recuperar.php';
+            require_once APP_FILE_TEMPLATE;
+            return;
+        }
+
+        $data = $request->getDataFromInput() ?? [];
+        $correo = (string)($data['correo'] ?? '');
+
+        $this->service->solicitarRecuperacionPassword($correo);
+        $response->setMessage("Si el correo existe, se envio un enlace de recuperacion.");
+        $response->send();
+    }
+
+    public function restablecerPassword(Request $request, Response $response): void
+    {
+        if ($request->getMethod() === 'GET') {
+            array_push($this->scripts, "/app/js/authentication/reset.js");
+            $this->view = 'authentication/restablecer.php';
+            require_once APP_FILE_TEMPLATE;
+            return;
+        }
+
+        $data = $request->getDataFromInput() ?? [];
+        $token = (string)($data['token'] ?? '');
+        $password = (string)($data['password'] ?? '');
+        $confirmacionPassword = (string)($data['confirmacionPassword'] ?? '');
+
+        $this->service->restablecerPassword($token, $password, $confirmacionPassword);
+        $response->setMessage("Contrasena restablecida con exito.");
+        $response->send();
+    }
+
     public function create(Request $request, Response $response): void
     {
         throw new \Exception("Método no implementado.");

@@ -1,5 +1,6 @@
 //aca cargo el DOM, primero voy a hacer que los botones muestren un cartel y despues añado funcionalidad
 import { userController } from "./controller.js";
+import { abrirInformeTabla } from "../shared/reportes.js";
 
 document.addEventListener("DOMContentLoaded", () =>{
     
@@ -29,7 +30,11 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     const btnPdf = document.getElementById("btnGenerarPDF");
     btnPdf.addEventListener("click", e => {
-        userController.exportToPDF();
+        abrirInformeTabla({
+            tableSelector: "#tablaUsuarios",
+            title: "Informe de usuarios",
+            excludeColumns: [5]
+        });
     })
 
     //boton buscar

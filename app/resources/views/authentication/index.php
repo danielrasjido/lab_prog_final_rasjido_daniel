@@ -7,6 +7,15 @@
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
+
+    <div id="toastResetExitoso" class="toast text-bg-success border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Contrasena actualizada correctamente. Ya puedes iniciar sesion.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
 </div>
 
 <div class="container mt-5">
@@ -29,6 +38,9 @@
                     <hr>
                     <p class="text-center mb-0">
                         ¿No tienes cuenta? <a href="authentication/registrarUsuario">Crear cuenta</a>
+                    </p>
+                    <p class="text-center mt-2 mb-0">
+                        <a href="authentication/recuperarPassword" class="link-secondary">Recuperar contrasena</a>
                     </p>
                      <!-- CONTENEDOR DEMO -->
                     <div class="card bg-light border">

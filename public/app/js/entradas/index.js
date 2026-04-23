@@ -4,6 +4,13 @@ document.addEventListener("DOMContentLoaded", ola => {
     console.log("dom cargado, modulo entradas")
     entradasController.list();
 
+    const btnGenerarPDF = document.getElementById("btnGenerarPDF");
+    if (btnGenerarPDF) {
+        btnGenerarPDF.addEventListener("click", () => {
+            entradasController.exportToPDF();
+        });
+    }
+
 
     //tabla
     let tabla = document.getElementById("cuerpoDeLaTabla");

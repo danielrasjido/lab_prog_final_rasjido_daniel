@@ -37,6 +37,20 @@ export const authenticationService = {
         });
     },
 
+    solicitarRecuperacionPassword: (correo) => {
+        return request("authentication/recuperarPassword", {
+            method: "POST",
+            body: JSON.stringify({ correo })
+        });
+    },
+
+    restablecerPassword: (token, password, confirmacionPassword) => {
+        return request("authentication/restablecerPassword", {
+            method: "POST",
+            body: JSON.stringify({ token, password, confirmacionPassword })
+        });
+    },
+
     logout: () => {
         return request("authentication/logout", {
             method: "GET"
