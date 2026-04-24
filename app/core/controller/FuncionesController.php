@@ -86,4 +86,25 @@ final class FuncionesController extends BaseController implements InterfaceContr
         $response->send();
     }
 
+    public function cancelar(Request $request, Response $response): void
+    {
+        $id = (int)$request->getId();
+        $cantidadEntradasCanceladas = $this->service->cancelar($id);
+
+        $response->setMessage("<p>La función fue cancelada correctamente.</p>");
+        $response->setResult([
+            'entradasCanceladas' => $cantidadEntradasCanceladas
+        ]);
+        $response->send();
+    }
+
+    public function habilitar(Request $request, Response $response): void
+    {
+        $id = (int)$request->getId();
+        $this->service->habilitar($id);
+
+        $response->setMessage("<p>La función fue habilitada correctamente.</p>");
+        $response->send();
+    }
+
 }

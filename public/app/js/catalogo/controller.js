@@ -313,7 +313,10 @@ async function cargarMisEntradas() {
                 <td>${escapeHtml(entrada.nombrePelicula || "-")}</td>
                 <td>${escapeHtml(formatearFecha(entrada.fecha || ""))}</td>
                 <td>${escapeHtml(entrada.hora || "-")}</td>
-                <td><span class="badge text-bg-success">Vigente</span></td>
+                <td>${Number(entrada.anulada) === 1
+                    ? '<span class="badge text-bg-warning">Cancelada</span>'
+                    : '<span class="badge text-bg-success">Vigente</span>'
+                }</td>
             </tr>
         `).join("");
     } catch (error) {

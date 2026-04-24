@@ -36,6 +36,8 @@ final class FuncionesService implements InterfaceService{
             throw new \Exception("El DTO recibido no corresponde a una función.");
         }
 
+        $dto->setEstado(1);
+
         $this->validarPeliculaDisponible($dto->getIdPelicula());
 
         //esta por si acaso
@@ -59,6 +61,9 @@ final class FuncionesService implements InterfaceService{
             throw new \Exception("El DTO recibido no corresponde a una función.");
         }
 
+        $funcionActual = $this->load($dto->getIdFuncion());
+        $dto->setEstado($funcionActual->getEstado());
+
         $this->validarPeliculaDisponible($dto->getIdPelicula());
 
         $this->validarFechaFuncionPosteriorActual($dto->getFecha());
@@ -74,6 +79,40 @@ final class FuncionesService implements InterfaceService{
     
     public function list(array $filters):array{
         return $this->dao->list($filters);
+    }
+
+    public function cancelar(int $idFuncion): int
+    {
+        $this->load($idFuncion);
+        $this->dao->cancelar($idFuncion);
+
+        $entradasService = new EntradasService();
+        $entradasAsociadas = $entradasService->list([
+            'idFuncion' => $idFuncion,
+            'anulada' => 0
+        ]);
+
+        $cantidadEntradasCanceladas = count($entradasAsociadas);
+
+        foreach ($entradasAsociadas as $entrada) {
+            $entradasService->disable((int)$entrada['idEntrada']);
+        }
+
+        return $cantidadEntradasCanceladas;
+    }
+
+    public function habilitar(int $idFuncion): void
+    {
+        $funcion = $this->load($idFuncion);
+        $this->validarPeliculaDisponible($funcion->getIdPelicula());
+        $this->validarSalaHabilitada($funcion->getIdSala());
+        $this->validarProgramacionVigente($funcion->getIdProgramacion());
+        $this->dao->habilitar($idFuncion);
+    }
+
+    public function cancelarPorPelicula(int $idPelicula): void
+    {
+        $this->dao->cancelarPorPelicula($idPelicula);
     }
 
    

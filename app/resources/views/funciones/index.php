@@ -21,6 +21,8 @@
             <th>Precio</th>
             <th>Fecha</th>
             <th>Hora</th>
+            <th>Estado</th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody id="cuerpoDeLaTabla">

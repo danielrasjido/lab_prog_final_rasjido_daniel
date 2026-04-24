@@ -130,6 +130,20 @@ final class PeliculasDAO extends BaseDAO{
         $stmt->execute(["id" => $id]);
     }
 
+    public function disable(int $id): void
+    {
+        $sql = "UPDATE {$this->table} SET disponibilidad = 0 WHERE idPelicula = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => $id]);
+    }
+
+    public function enable(int $id): void
+    {
+        $sql = "UPDATE {$this->table} SET disponibilidad = 1 WHERE idPelicula = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => $id]);
+    }
+
     public function list(array $filters):array
     {
         //filtrar por nombre, titulo original, genero, pais, idioma, calificacion

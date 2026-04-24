@@ -5,7 +5,7 @@ use app\core\model\dto\base\InterfaceDto;
 use DateTime;
 
 final class FuncionesDTO implements InterfaceDto{
-    private $idFuncion, $idPelicula, $idProgramacion, $idSala, $precio;
+    private $idFuncion, $idPelicula, $idProgramacion, $idSala, $precio, $estado;
     private DateTime $fecha, $hora;
 
 
@@ -16,6 +16,7 @@ final class FuncionesDTO implements InterfaceDto{
             $this->setIdProgramacion($data['idProgramacion'] ?? 0);
             $this->setIdSala($data['idSala'] ?? 0);
             $this->setPrecio($data['precio'] ?? 0.00);
+            $this->setEstado((int)($data['estado'] ?? 1));
             $this->setFecha(new DateTime($data['fecha'] ?? 'now'));
             $this->setHora(new DateTime($data['hora'] ?? 'now'));
         }
@@ -46,6 +47,11 @@ final class FuncionesDTO implements InterfaceDto{
     public function getPrecio(): float
     {
         return $this->precio;
+    }
+
+    public function getEstado(): int
+    {
+        return $this->estado;
     }
 
     public function getFecha(): DateTime
@@ -85,6 +91,11 @@ final class FuncionesDTO implements InterfaceDto{
         $this->precio = $precio;
     }
 
+    public function setEstado(int $estado): void
+    {
+        $this->estado = ($estado === 0) ? 0 : 1;
+    }
+
     public function setFecha(DateTime $fecha): void
     {
         $this->fecha = $fecha;
@@ -105,6 +116,7 @@ final class FuncionesDTO implements InterfaceDto{
             'idProgramacion' => $this->idProgramacion,
             'idSala' => $this->idSala,
             'precio' => $this->precio,
+            'estado' => $this->estado,
             'fecha' => $this->fecha->format('Y-m-d'),
             'hora' => $this->hora->format('H:i:s'),
         ];

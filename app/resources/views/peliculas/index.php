@@ -13,8 +13,8 @@
 </nav>
 <div class="card shadow-sm mt-4">
     <div class="card-body px-3 px-md-4 m-1">
-        <div class="table-responsive rounded overflow-hidden border">
-            <table id="tablaPeliculas" class="table table-striped text-center align-middle mb-0">
+        <div class="table-responsive rounded border">
+            <table id="tablaPeliculas" class="table table-striped text-center align-middle mb-0 text-nowrap">
     <thead>
         <tr>
             <th>Id pelicula</th>

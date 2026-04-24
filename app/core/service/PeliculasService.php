@@ -32,6 +32,14 @@ final class PeliculasService implements InterfaceService{
         $this->dao->save($dto->toArray());
     }
     public function update(InterfaceDto $dto):void{
+        if (!($dto instanceof PeliculasDTO)) {
+            throw new \Exception("El DTO recibido no corresponde a una película.");
+        }
+
+        if ($dto->getDisponibilidad() === 0) {
+            $this->funcionesService->cancelarPorPelicula($dto->getIdPelicula());
+        }
+
         $this->dao->update($dto->toArray());
     }
     public function delete(InterfaceDto $dto):void{
@@ -50,5 +58,16 @@ final class PeliculasService implements InterfaceService{
     }
     public function list(array $filters):array{
         return $this->dao->list($filters);
+    }
+
+    public function disable(int $id): void
+    {
+        $this->dao->disable($id);
+        $this->funcionesService->cancelarPorPelicula($id);
+    }
+
+    public function enable(int $id): void
+    {
+        $this->dao->enable($id);
     }
 }

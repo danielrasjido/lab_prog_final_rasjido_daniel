@@ -87,4 +87,22 @@ final class PeliculasController extends BaseController implements InterfaceContr
         $response->send();
     }
 
+    public function disable(Request $request, Response $response): void
+    {
+        $id = (int)$request->getId();
+        $this->service->disable($id);
+
+        $response->setMessage("<p>Película deshabilitada correctamente.</p>");
+        $response->send();
+    }
+
+    public function enable(Request $request, Response $response): void
+    {
+        $id = (int)$request->getId();
+        $this->service->enable($id);
+
+        $response->setMessage("<p>Película habilitada correctamente.</p>");
+        $response->send();
+    }
+
 }

@@ -12,7 +12,21 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
 
     public function __construct(?PDO $connection)
     {
-        return parent::__construct($connection, 'funciones');
+        parent::__construct($connection, 'funciones');
+        $this->asegurarColumnaEstado();
+    }
+
+    private function asegurarColumnaEstado(): void
+    {
+        $stmt = $this->connection->prepare("SHOW COLUMNS FROM {$this->table} LIKE 'estado'");
+        $stmt->execute();
+        $existe = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($existe) {
+            return;
+        }
+
+        $this->connection->exec("ALTER TABLE {$this->table} ADD COLUMN estado TINYINT(1) NOT NULL DEFAULT 1");
     }
 
     /**
@@ -45,6 +59,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             idProgramacion,
             idSala,
             precio,
+            estado,
             fecha,
             hora
         ) VALUES (
@@ -52,6 +67,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             :idProgramacion,
             :idSala,
             :precio,
+            :estado,
             :fecha,
             :hora
         )";
@@ -61,6 +77,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             "idProgramacion" => $data["idProgramacion"],
             "idSala" => $data["idSala"],
             "precio" => $data["precio"],
+            "estado" => (int)($data["estado"] ?? 1),
             "fecha" => $data["fecha"],
             "hora" => $data["hora"]
         ]);
@@ -77,6 +94,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             idProgramacion = :idProgramacion,
             idSala = :idSala,
             precio = :precio,
+            estado = :estado,
             fecha = :fecha,
             hora = :hora
         WHERE idFuncion = :idFuncion";
@@ -87,9 +105,31 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             "idProgramacion" => $data["idProgramacion"],
             "idSala" => $data["idSala"],
             "precio" => $data["precio"],
+            "estado" => (int)($data["estado"] ?? 1),
             "fecha" => $data["fecha"],
             "hora" => $data["hora"]
         ]);
+    }
+
+    public function cancelar(int $id): void
+    {
+        $sql = "UPDATE {$this->table} SET estado = 0 WHERE idFuncion = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => (int)$id]);
+    }
+
+    public function habilitar(int $id): void
+    {
+        $sql = "UPDATE {$this->table} SET estado = 1 WHERE idFuncion = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["id" => (int)$id]);
+    }
+
+    public function cancelarPorPelicula(int $idPelicula): void
+    {
+        $sql = "UPDATE {$this->table} SET estado = 0 WHERE idPelicula = :idPelicula";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute(["idPelicula" => (int)$idPelicula]);
     }
 
     /**
@@ -117,6 +157,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             f.idProgramacion,
             f.idSala,
             f.precio,
+            f.estado,
             f.fecha,
             f.hora,
             p.nombre AS nombrePelicula
@@ -130,6 +171,7 @@ final class FuncionesDAO extends BaseDAO implements InterfaceDAO
             'idProgramacion' => 'f.idProgramacion',
             'idSala' => 'f.idSala',
             'precio' => 'f.precio',
+            'estado' => 'f.estado',
             'fecha' => 'f.fecha',
             'hora' => 'f.hora'
         ];

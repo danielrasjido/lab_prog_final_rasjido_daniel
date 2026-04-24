@@ -109,10 +109,12 @@ final class EntradasDAO extends BaseDAO {
         $parametros = [];
 
         $sql = "SELECT e.*, CONCAT(u.nombre, ' ', u.apellido) AS nombreUsuario,
-                CONCAT(f.fecha, ' / ', f.hora) AS fechaHoraFuncion
+            p.nombre AS nombrePelicula,
+            CONCAT(f.fecha, ' / ', f.hora) AS fechaHoraFuncion
                 FROM {$this->table} e
                 JOIN usuarios u ON e.idUsuario = u.idUsuario
                 JOIN funciones f ON e.idFuncion = f.idFuncion
+            JOIN peliculas p ON f.idPelicula = p.idPelicula
                 WHERE 1=1";
 
         if(isset($filters["idFuncion"])){

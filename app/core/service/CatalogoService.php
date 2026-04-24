@@ -155,8 +155,7 @@ final class CatalogoService implements InterfaceService
 	public function misEntradas(int $idUsuario): array
 	{
 		$entradas = $this->entradasService->list([
-			'idUsuario' => $idUsuario,
-			'anulada' => 0
+			'idUsuario' => $idUsuario
 		]);
 
 		foreach ($entradas as &$entrada) {
@@ -221,6 +220,10 @@ final class CatalogoService implements InterfaceService
 
 	private function esFuncionDisponibleEnCatalogo(array $funcion): bool
 	{
+		if (isset($funcion['estado']) && (int)$funcion['estado'] !== 1) {
+			return false;
+		}
+
 		$fecha = (string)($funcion['fecha'] ?? '');
 		$hora = (string)($funcion['hora'] ?? '00:00:00');
 

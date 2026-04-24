@@ -40,8 +40,13 @@ export const peliculasService = {
             body: JSON.stringify(pelicula)
         })
     },
-    delete: (id) => {
-        return request(`peliculas/delete/${id}`, {
+    disable: (id) => {
+        return request(`peliculas/disable/${id}`, {
+            method: "GET"
+        })
+    },
+    enable: (id) => {
+        return request(`peliculas/enable/${id}`, {
             method: "GET"
         })
     },

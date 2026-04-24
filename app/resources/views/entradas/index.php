@@ -14,6 +14,7 @@
         <tr>
             <th>Nro de ticket</th>
             <th>Usuario</th>
+            <th>Película</th>
             <th>Fecha y hora de la compra</th>
             <th>Funcion</th>
             <th>Fecha y hora de la funcion</th>

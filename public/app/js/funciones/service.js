@@ -50,5 +50,10 @@ export const funcionesService = {
         return request(`funciones/cancelar/${idFuncion}`, {
             method: "GET"
         });
+    },
+    habilitar: (idFuncion) => {
+        return request(`funciones/habilitar/${idFuncion}`, {
+            method: "GET"
+        });
     }
 }

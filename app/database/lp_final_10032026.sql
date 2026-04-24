@@ -81,6 +81,7 @@ CREATE TABLE `funciones` (
   `idProgramacion` int(11) NOT NULL,
   `idSala` int(11) NOT NULL,
   `precio` decimal(10,2) NOT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 1,
   `fecha` date NOT NULL,
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

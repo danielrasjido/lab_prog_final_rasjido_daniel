@@ -17,13 +17,23 @@ document.addEventListener("DOMContentLoaded", event => {
     }
 
 
-    //boton eliminar
+    //boton deshabilitar
     document.getElementById("cuerpoDeLaTabla").addEventListener("click", (e) => {
-        if (e.target.classList.contains("btnEliminar")) {
+        if (e.target.classList.contains("btnDeshabilitar")) {
             const id = parseInt(e.target.dataset.idPelicula);
-            peliculasController.delete(id)
+            peliculasController.disable(id)
             .then(() => peliculasController.list({}))
-            .catch(err => alert(err.message || "No se pudo eliminar la película."));
+            .catch(err => alert(err.message || "No se pudo deshabilitar la película."));
+        }
+    });
+
+    //boton habilitar
+    document.getElementById("cuerpoDeLaTabla").addEventListener("click", (e) => {
+        if (e.target.classList.contains("btnHabilitar")) {
+            const id = parseInt(e.target.dataset.idPelicula);
+            peliculasController.enable(id)
+            .then(() => peliculasController.list({}))
+            .catch(err => alert(err.message || "No se pudo habilitar la película."));
         }
     });
 

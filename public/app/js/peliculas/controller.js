@@ -126,20 +126,13 @@ export const peliculasController = {
             throw error;
         }
     },
-    delete: (id) => {
-        if (!confirm("¿Está seguro que desea eliminar esta película? Esta acción no se puede deshacer.")) {
-            return;
-        }
-        return peliculasService.delete(id)
-        .then(response => {
-            if(response.error){
-                console.error("no se pudo eliminar la pelicula" + error);
-                //añadir toast mas adelante
-            } else {
-                console.log("pelicula eliminada con exito");
-                //añadir toast mas adelante
-            }
-        })
+    disable: async (id) => {
+        await peliculasService.disable(id);
+        alert("Película deshabilitada correctamente.");
+    },
+    enable: async (id) => {
+        await peliculasService.enable(id);
+        alert("Película habilitada correctamente.");
     },
     list: async (filters) => {
         try {
@@ -228,10 +221,11 @@ function mostrarPeliculas(peliculas){
             <td>${p.sitioWeb}</td>
             <td>${p.fechaEstreno}</td>
             <td>${p.fechaIngreso}</td>
-            <td>${p.disponibilidad}</td>
+            <td>${Number(p.disponibilidad) === 1 ? "Disponible" : "No disponible"}</td>
             <td>
                 <a href="peliculas/edit/${p.idPelicula}" class="btn btn-primary">Modificar</a>
-                <button type="button" data-id-pelicula=${p.idPelicula} class="btn btn-danger btnEliminar">Eliminar</button>
+                <button type="button" data-id-pelicula=${p.idPelicula} class="btn btn-warning btnDeshabilitar" ${Number(p.disponibilidad) === 1 ? '' : 'disabled'}>Deshabilitar</button>
+                <button type="button" data-id-pelicula=${p.idPelicula} class="btn btn-success btnHabilitar" ${Number(p.disponibilidad) === 0 ? '' : 'disabled'}>Habilitar</button>
             </td>
         `;
         //insertamos la fila a la tabla

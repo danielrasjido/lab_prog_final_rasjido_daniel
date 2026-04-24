@@ -18,7 +18,7 @@ export const entradasController = {
         abrirInformeTabla({
             tableSelector: "#tablaEntradas",
             title: "Informe de entradas",
-            excludeColumns: [6]
+            excludeColumns: [7]
         });
     },
     enable: id => entradasService.enable(id),
@@ -38,6 +38,7 @@ function mostrarEntradas(entradas) {
          tr.innerHTML = `
             <td>${e.idEntrada}</td>
             <td>${e.nombreUsuario}</td>
+                <td>${e.nombrePelicula ?? "-"}</td>
             <td>${e.fechaHora}</td>
             <td>${e.idFuncion}</td>
             <td>${e.fechaHoraFuncion}</td>

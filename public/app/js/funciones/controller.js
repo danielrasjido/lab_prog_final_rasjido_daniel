@@ -45,8 +45,17 @@ export const funcionesController = {
         abrirInformeTabla({
             tableSelector: "#tablaFunciones",
             title: "Informe de funciones",
-            excludeColumns: [7]
+            excludeColumns: [8]
         });
+    },
+    cancelar: async (idFuncion) => {
+        const resultado = await funcionesService.cancelar(idFuncion);
+        const entradasCanceladas = Number(resultado?.entradasCanceladas ?? 0);
+        alert(`Función cancelada correctamente. Entradas anuladas: ${entradasCanceladas}.`);
+    },
+    habilitar: async (idFuncion) => {
+        await funcionesService.habilitar(idFuncion);
+        alert("Función habilitada correctamente.");
     }
 }
 
@@ -75,9 +84,11 @@ function mostrarFunciones(funciones) {
             <td>${f.precio}</td>
             <td>${f.fecha}</td>
             <td>${f.hora}</td>
+            <td>${Number(f.estado) === 1 ? "Vigente" : "Cancelada"}</td>
             <td>
                 <a href="funciones/edit/${f.idPelicula}" class="btn btn-primary">Modificar</a>
-                <button type="button" data-id-pelicula=${f.idPelicula} class="btn btn-danger btnEliminar">Eliminar</button>
+                <button type="button" data-id-funcion=${f.idFuncion} class="btn btn-warning btnCancelar" ${Number(f.estado) === 1 ? '' : 'disabled'}>Cancelar</button>
+                <button type="button" data-id-funcion=${f.idFuncion} class="btn btn-success btnHabilitar" ${Number(f.estado) === 0 ? '' : 'disabled'}>Habilitar</button>
             </td>
         `;
         //insertamos la fila a la tabla
