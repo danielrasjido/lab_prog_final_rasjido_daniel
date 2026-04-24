@@ -15,7 +15,7 @@ const request = async (url, options = {}) => {
     const data = await response.json();
 
     if (data.error) {
-        throw new Error(data.message || "Error en la API");
+        throw new Error(data.error || data.message || "Error en la API");
     }
 
     console.log("Retornando data.result:", data.result);

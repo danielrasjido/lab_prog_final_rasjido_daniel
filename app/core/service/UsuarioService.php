@@ -13,10 +13,14 @@ use Exception;
 final class UsuarioService implements InterfaceService{
 
     private UsuarioDAO $dao;
+    private EntradasService $entradasService;
+    private ComentariosService $comentariosService;
 
     public function __construct()
     {
         $this->dao = new UsuarioDAO(Connection::get());
+        $this->entradasService = new EntradasService();
+        $this->comentariosService = new ComentariosService();
     }
 
     public function load(int $id):InterfaceDto{
@@ -40,7 +44,25 @@ final class UsuarioService implements InterfaceService{
 
     public function delete(InterfaceDto $dto):void{
         $data = $dto->toArray();
-        $id = $data['idUsuario'];
+        $id = (int)$data['idUsuario'];
+
+        $entradasAsociadas = $this->entradasService->list([
+            'idUsuario' => $id
+        ]);
+
+        if (count($entradasAsociadas) > 0) {
+            throw new \Exception("No se permite borrar un usuario asociado a entradas.");
+        }
+
+        $comentariosAsociados = array_values(array_filter(
+            $this->comentariosService->list([]),
+            fn(array $comentario): bool => (int)($comentario['idUsuario'] ?? 0) === $id
+        ));
+
+        if (count($comentariosAsociados) > 0) {
+            throw new \Exception("No se permite borrar un usuario asociado a comentarios.");
+        }
+
         $this->dao->delete($id);
     }
     

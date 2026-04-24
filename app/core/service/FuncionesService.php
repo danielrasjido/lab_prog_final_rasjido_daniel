@@ -5,6 +5,7 @@ namespace app\core\service;
 use app\core\model\dao\base\InterfaceDAO;
 use app\core\model\dao\FuncionesDAO;
 use app\core\model\dto\FuncionesDTO;
+use app\core\model\dto\PeliculasDTO;
 use app\core\model\dto\base\InterfaceDto;
 use app\core\model\dto\SalasDTO;
 use app\core\service\base\InterfaceService;
@@ -35,6 +36,7 @@ final class FuncionesService implements InterfaceService{
             throw new \Exception("El DTO recibido no corresponde a una función.");
         }
 
+        $this->validarPeliculaDisponible($dto->getIdPelicula());
 
         //esta por si acaso
         $this->validarFechaFuncionPosteriorActual($dto->getFecha());
@@ -57,6 +59,8 @@ final class FuncionesService implements InterfaceService{
             throw new \Exception("El DTO recibido no corresponde a una función.");
         }
 
+        $this->validarPeliculaDisponible($dto->getIdPelicula());
+
         $this->validarFechaFuncionPosteriorActual($dto->getFecha());
 
         $this->dao->update($dto->toArray());
@@ -75,6 +79,17 @@ final class FuncionesService implements InterfaceService{
    
 
     //primera validacion
+    public function validarPeliculaDisponible(int $idPelicula): void{
+        $peliculasService = new PeliculasService();
+        /** @var PeliculasDTO $peliculaDTO */
+        $peliculaDTO = $peliculasService->load($idPelicula);
+
+        if ($peliculaDTO->getDisponibilidad() !== 1) {
+            throw new \Exception("La película seleccionada no está disponible.");
+        }
+    }
+
+    //segunda validacion
     //validamos que la sala seleccionada tenga estado = 1
     public function validarSalaHabilitada(int $idSala): void{
         $salaService = new SalasService();

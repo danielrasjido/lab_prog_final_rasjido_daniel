@@ -36,7 +36,6 @@ function mostrarComentarios(comentarios) {
             <td>${comentario.tituloPelicula}</td>
             <td>${comentario.comentario}</td>
             <td>
-                <a href="usuario/edit/${comentario.idUsuario}" class="btn btn-primary">Suspender usuario</a>
                 <button type="button" data-id-comentario=${comentario.idComentario} class="btn btn-danger btnEliminar">Eliminar comentario</button>
             </td>
         `;

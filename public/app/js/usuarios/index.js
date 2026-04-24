@@ -21,8 +21,11 @@ document.addEventListener("DOMContentLoaded", () =>{
     document.getElementById("cuerpoDeLaTabla").addEventListener("click", (e) =>{
         if(e.target.classList.contains("btnEliminar")){
             const idUsuario = parseInt(e.target.dataset.idUsuario);
-            userController.delete(idUsuario);
-            userController.list()
+            userController.delete(idUsuario)
+                .then(() => userController.list())
+                .catch((error) => {
+                    alert(error.message || "No se pudo eliminar el usuario.");
+                });
         }
     });
 

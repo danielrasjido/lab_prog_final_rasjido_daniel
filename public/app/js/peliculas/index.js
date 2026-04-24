@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", event => {
             const id = parseInt(e.target.dataset.idPelicula);
             peliculasController.delete(id)
             .then(() => peliculasController.list({}))
-            .catch(err => console.error(err));;
+            .catch(err => alert(err.message || "No se pudo eliminar la película."));
         }
     });
 

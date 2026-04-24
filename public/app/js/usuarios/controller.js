@@ -79,10 +79,17 @@ export const userController = {
     },
     delete: (id) => {
         if (!confirm("¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.")) {
-            return;
+            return Promise.resolve();
         }
 
-        userService.delete(id);
+        return userService.delete(id)
+            .then((response) => {
+                if (response.error) {
+                    throw new Error(response.error);
+                }
+
+                return response;
+            });
     },
     list: (filters) => {
 

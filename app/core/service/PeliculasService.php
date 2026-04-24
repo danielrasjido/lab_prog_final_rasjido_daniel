@@ -11,10 +11,12 @@ use app\libs\database\Connection;
 final class PeliculasService implements InterfaceService{
 
     private PeliculasDAO $dao;
+    private FuncionesService $funcionesService;
 
     public function __construct()
     {
         $this->dao = new PeliculasDAO(Connection::get());
+        $this->funcionesService = new FuncionesService();
     }
    
 
@@ -35,6 +37,15 @@ final class PeliculasService implements InterfaceService{
     public function delete(InterfaceDto $dto):void{
         $data = $dto->toArray();
         $id = $data['idPelicula'];
+
+        $funcionesAsociadas = $this->funcionesService->list([
+            'idPelicula' => $id
+        ]);
+
+        if (count($funcionesAsociadas) > 0) {
+            throw new \Exception("No se permite borrar una película asociada a una función.");
+        }
+
         $this->dao->delete($id);
     }
     public function list(array $filters):array{
