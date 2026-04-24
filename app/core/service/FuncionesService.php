@@ -35,6 +35,10 @@ final class FuncionesService implements InterfaceService{
             throw new \Exception("El DTO recibido no corresponde a una función.");
         }
 
+
+        //esta por si acaso
+        $this->validarFechaFuncionPosteriorActual($dto->getFecha());
+
         //primera validacion...
         $this->validarSalaHabilitada($dto->getIdSala());
 
@@ -49,6 +53,12 @@ final class FuncionesService implements InterfaceService{
     }
 
     public function update(InterfaceDto $dto):void{
+        if (!($dto instanceof FuncionesDTO)) {
+            throw new \Exception("El DTO recibido no corresponde a una función.");
+        }
+
+        $this->validarFechaFuncionPosteriorActual($dto->getFecha());
+
         $this->dao->update($dto->toArray());
     }
 
@@ -61,6 +71,8 @@ final class FuncionesService implements InterfaceService{
     public function list(array $filters):array{
         return $this->dao->list($filters);
     }
+
+   
 
     //primera validacion
     //validamos que la sala seleccionada tenga estado = 1
@@ -139,6 +151,14 @@ final class FuncionesService implements InterfaceService{
         return (int)$coincidencias[0]["idProgramacion"];
     }
 
-    
+     private function validarFechaFuncionPosteriorActual(\DateTime $fechaFuncion): void
+    {
+        $hoy = (new \DateTime())->setTime(0, 0, 0);
+        $fecha = (clone $fechaFuncion)->setTime(0, 0, 0);
+
+        if ($fecha <= $hoy) {
+            throw new \Exception("La fecha de la función debe ser posterior a la fecha actual del sistema.");
+        }
+    }
 
 }

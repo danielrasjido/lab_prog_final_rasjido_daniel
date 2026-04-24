@@ -253,6 +253,8 @@ final class CatalogoService implements InterfaceService
 		return true;
 	}
 
+	//si la cantidad de entradas vendidas para la función es igual o mayor que la capacidad de la sala
+	//no se puede comprar
 	private function validarCapacidadDisponible(array $funcion): void
 	{
 		$sala = $this->salasService->load((int)$funcion['idSala']);

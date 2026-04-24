@@ -45,6 +45,8 @@ final class ProgramacionService implements InterfaceService
             $data['idEstadoProgramacion'] ?? self::ESTADO_PROGRAMADA
         );
 
+        $this->validarFechaInicioNoAnteriorSistema(new \DateTime($data['fechaInicio']));
+
         $this->validarSemanaProgramacion(
             new \DateTime($data['fechaInicio']),
             new \DateTime($data['fechaFin']),
@@ -63,6 +65,8 @@ final class ProgramacionService implements InterfaceService
         $data['idEstadoProgramacion'] = $this->normalizarEstadoProgramacion(
             $data['idEstadoProgramacion'] ?? self::ESTADO_PROGRAMADA
         );
+
+        $this->validarFechaInicioNoAnteriorSistema(new \DateTime($data['fechaInicio']));
 
         $this->validarSemanaProgramacion(
             new \DateTime($data['fechaInicio']),
@@ -101,6 +105,16 @@ final class ProgramacionService implements InterfaceService
         }
 
         return $idEstadoProgramacion;
+    }
+
+    private function validarFechaInicioNoAnteriorSistema(\DateTime $fechaInicio): void
+    {
+        $hoy = (new \DateTime())->setTime(0, 0, 0);
+        $inicio = (clone $fechaInicio)->setTime(0, 0, 0);
+
+        if ($inicio < $hoy) {
+            throw new \Exception("La fecha de inicio no puede ser anterior a la fecha actual del sistema.");
+        }
     }
 
     /**
